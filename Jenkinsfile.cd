@@ -1,0 +1,83 @@
+pipeline {
+  agent any
+
+  environment {
+    IMAGE = "ghcr.io/lifetrack-platform/finance-service"
+    VPS   = "95.216.164.54"
+    VPS_USER = "ricardo"
+  }
+
+  stages {
+    stage("Docker Build") {
+      steps {
+        sh "docker build -t ${IMAGE}:${env.BUILD_NUMBER} ."
+      }
+    }
+
+    stage("Docker Push") {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'github-token-userpass', usernameVariable: 'GH_USER', passwordVariable: 'GH_TOKEN')]) {
+          sh "echo ${GH_TOKEN} | docker login ghcr.io -u ${GH_USER} --password-stdin"
+          sh "docker push ${IMAGE}:${env.BUILD_NUMBER}"
+        }
+      }
+    }
+
+    stage("Docker Login (VPS)") {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'github-token-userpass', usernameVariable: 'GH_USER', passwordVariable: 'GH_TOKEN')]) {
+          sshagent(['vps-ssh']) {
+            sh """
+              ssh -o StrictHostKeyChecking=no ${VPS_USER}@${VPS} '
+                echo ${GH_TOKEN} | docker login ghcr.io -u ${GH_USER} --password-stdin
+              '
+            """
+          }
+        }
+      }
+    }
+
+    stage("Migrate") {
+      steps {
+        sshagent(['vps-ssh']) {
+          sh """
+            ssh -o StrictHostKeyChecking=no ${VPS_USER}@${VPS} '
+              docker run --rm \
+                --network lifetrack-net \
+                --env-file /home/ricardo/lifetrack-infra/envs/finance-service.env \
+                ${IMAGE}:${env.BUILD_NUMBER} \
+                node_modules/.bin/prisma migrate deploy --schema=prisma/schema.prisma
+            '
+          """
+        }
+      }
+    }
+
+    stage("Deploy") {
+      steps {
+        sshagent(['vps-ssh']) {
+          sh """
+            ssh -o StrictHostKeyChecking=no ${VPS_USER}@${VPS} '
+              docker stop finance-service || true
+              docker rm finance-service || true
+              docker run -d --name finance-service \
+                --network lifetrack-net \
+                --restart unless-stopped \
+                --env-file /home/ricardo/lifetrack-infra/envs/finance-service.env \
+                ${IMAGE}:${env.BUILD_NUMBER}
+            '
+          """
+        }
+      }
+    }
+  }
+
+  post {
+    success {
+      echo "Deploy OK - finance-service #${env.BUILD_NUMBER}"
+    }
+    failure {
+      echo "Deploy FAILED - finance-service #${env.BUILD_NUMBER}"
+    }
+  }
+}

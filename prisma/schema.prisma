@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum AccountType {
+  CASH
+  BANK
+  CARD
+  OTHER
+}
+
+enum CategoryKind {
+  INCOME
+  EXPENSE
+}
+
+enum TransactionKind {
+  INCOME
+  EXPENSE
+}
+
+model Account {
+  id        String      @id @default(uuid())
+  userId    String
+  name      String
+  type      AccountType @default(OTHER)
+  currency  String
+  balance   Float       @default(0)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  transactions Transaction[]
+
+  @@index([userId])
+}
+
+model Category {
+  id        String       @id @default(uuid())
+  userId    String
+  name      String
+  kind      CategoryKind
+  icon      String?
+  color     String?
+  createdAt DateTime     @default(now())
+
+  transactions Transaction[]
+  budgets      Budget[]
+
+  @@index([userId])
+}
+
+model Transaction {
+  id          String          @id @default(uuid())
+  userId      String
+  accountId   String
+  account     Account         @relation(fields: [accountId], references: [id])
+  categoryId  String
+  category    Category        @relation(fields: [categoryId], references: [id])
+  amount      Float
+  kind        TransactionKind
+  description String?
+  occurredAt  DateTime
+  createdAt   DateTime        @default(now())
+
+  @@index([userId])
+  @@index([accountId])
+  @@index([categoryId, occurredAt])
+}
+
+model Budget {
+  id          String   @id @default(uuid())
+  userId      String
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+  amount      Float
+  periodMonth Int
+  periodYear  Int
+  createdAt   DateTime @default(now())
+
+  @@unique([categoryId, periodMonth, periodYear])
+  @@index([userId])
+}
