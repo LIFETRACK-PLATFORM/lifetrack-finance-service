@@ -1,4 +1,4 @@
-import { IsInt, IsNumber, IsPositive, IsString, Max, Min } from 'class-validator';
+import { IsInt, IsPositive, IsString, Max, Min } from 'class-validator';
 
 export class UpdateBudgetDto {
   @IsString()

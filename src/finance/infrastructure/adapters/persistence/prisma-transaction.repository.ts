@@ -9,7 +9,6 @@ import type {
   UpdateTransactionInput,
 } from '../../../domain/ports/transaction.repository.port';
 import { TransactionMapper } from './transaction.mapper';
-import { TransactionKind } from '../../../domain/entities/transaction.entity';
 
 @Injectable()
 export class PrismaTransactionRepository implements TransactionRepositoryPort {
@@ -165,7 +164,7 @@ export class PrismaTransactionRepository implements TransactionRepositoryPort {
       }
       const entry = byCurrency.get(currency)!;
 
-      if (row.kind === TransactionKind.INCOME) {
+      if (row.kind === 'INCOME') {
         entry.totalIncome += row.amount;
       } else {
         entry.totalExpense += row.amount;

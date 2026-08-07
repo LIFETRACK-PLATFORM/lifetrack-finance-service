@@ -2,7 +2,6 @@ import {
   IsBoolean,
   IsEnum,
   IsInt,
-  IsOptional,
   IsPositive,
   IsString,
   Max,
