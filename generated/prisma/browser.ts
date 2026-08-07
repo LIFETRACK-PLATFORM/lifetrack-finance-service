@@ -37,3 +37,8 @@ export type Transaction = Prisma.TransactionModel
  * 
  */
 export type Budget = Prisma.BudgetModel
+/**
+ * Model RecurringItem
+ * 
+ */
+export type RecurringItem = Prisma.RecurringItemModel

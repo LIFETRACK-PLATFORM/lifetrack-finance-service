@@ -4,6 +4,7 @@ import { CategoryEntity } from '../../../domain/entities/category.entity';
 import type {
   CategoryRepositoryPort,
   CreateCategoryInput,
+  UpdateCategoryInput,
 } from '../../../domain/ports/category.repository.port';
 import { CategoryMapper } from './category.mapper';
 
@@ -45,5 +46,24 @@ export class PrismaCategoryRepository implements CategoryRepositoryPort {
       },
     });
     return CategoryMapper.toDomain(raw);
+  }
+
+  async update(
+    id: string,
+    data: UpdateCategoryInput,
+  ): Promise<CategoryEntity> {
+    const raw = await this.prisma.category.update({
+      where: { id },
+      data: {
+        name: data.name,
+        icon: data.icon,
+        color: data.color,
+      },
+    });
+    return CategoryMapper.toDomain(raw);
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.prisma.category.delete({ where: { id } });
   }
 }

@@ -5,14 +5,27 @@ package lifetrack.finance;
 service FinanceService {
   rpc CreateAccount (CreateAccountRequest) returns (AccountResponse);
   rpc ListAccounts (ListAccountsRequest) returns (ListAccountsResponse);
+  rpc UpdateAccount (UpdateAccountRequest) returns (AccountResponse);
+  rpc DeleteAccount (DeleteAccountRequest) returns (DeleteAccountResponse);
   rpc CreateCategory (CreateCategoryRequest) returns (CategoryResponse);
   rpc ListCategories (ListCategoriesRequest) returns (ListCategoriesResponse);
+  rpc UpdateCategory (UpdateCategoryRequest) returns (CategoryResponse);
+  rpc DeleteCategory (DeleteCategoryRequest) returns (DeleteCategoryResponse);
   rpc CreateTransaction (CreateTransactionRequest) returns (TransactionResponse);
   rpc UpdateTransaction (UpdateTransactionRequest) returns (TransactionResponse);
   rpc DeleteTransaction (DeleteTransactionRequest) returns (DeleteTransactionResponse);
   rpc ListTransactions (ListTransactionsRequest) returns (ListTransactionsResponse);
   rpc CreateBudget (CreateBudgetRequest) returns (BudgetResponse);
+  rpc UpdateBudget (UpdateBudgetRequest) returns (BudgetResponse);
+  rpc DeleteBudget (DeleteBudgetRequest) returns (DeleteBudgetResponse);
+  rpc ListBudgets (ListBudgetsRequest) returns (ListBudgetsResponse);
   rpc GetBudgetStatus (GetBudgetStatusRequest) returns (BudgetStatusResponse);
+  rpc GetMonthlySummary (GetMonthlySummaryRequest) returns (GetMonthlySummaryResponse);
+  rpc CreateRecurringItem (CreateRecurringItemRequest) returns (RecurringItemResponse);
+  rpc UpdateRecurringItem (UpdateRecurringItemRequest) returns (RecurringItemResponse);
+  rpc DeleteRecurringItem (DeleteRecurringItemRequest) returns (DeleteRecurringItemResponse);
+  rpc ListRecurringItems (ListRecurringItemsRequest) returns (ListRecurringItemsResponse);
+  rpc ProcessRecurringItems (ProcessRecurringItemsRequest) returns (ProcessRecurringItemsResponse);
 }
 
 message CreateAccountRequest {
@@ -20,6 +33,21 @@ message CreateAccountRequest {
   string type = 2;
   string currency = 3;
   double initialBalance = 4;
+}
+
+message UpdateAccountRequest {
+  string accountId = 1;
+  string name = 2;
+  string type = 3;
+  string currency = 4;
+}
+
+message DeleteAccountRequest {
+  string accountId = 1;
+}
+
+message DeleteAccountResponse {
+  bool deleted = 1;
 }
 
 message AccountResponse {
@@ -44,6 +72,21 @@ message CreateCategoryRequest {
   string color = 4;
 }
 
+message UpdateCategoryRequest {
+  string categoryId = 1;
+  string name = 2;
+  string icon = 3;
+  string color = 4;
+}
+
+message DeleteCategoryRequest {
+  string categoryId = 1;
+}
+
+message DeleteCategoryResponse {
+  bool deleted = 1;
+}
+
 message CategoryResponse {
   string categoryId = 1;
   string userId = 2;
@@ -66,6 +109,7 @@ message CreateTransactionRequest {
   string kind = 4;
   string description = 5;
   string occurredAt = 6;
+  string recurringItemId = 7;
 }
 
 message TransactionResponse {
@@ -114,12 +158,34 @@ message CreateBudgetRequest {
   int32 periodYear = 4;
 }
 
+message UpdateBudgetRequest {
+  string budgetId = 1;
+  double amount = 2;
+}
+
+message DeleteBudgetRequest {
+  string budgetId = 1;
+}
+
+message DeleteBudgetResponse {
+  bool deleted = 1;
+}
+
 message BudgetResponse {
   string budgetId = 1;
   string categoryId = 2;
   double amount = 3;
   int32 periodMonth = 4;
   int32 periodYear = 5;
+}
+
+message ListBudgetsRequest {
+  int32 periodMonth = 1;
+  int32 periodYear = 2;
+}
+
+message ListBudgetsResponse {
+  repeated BudgetResponse budgets = 1;
 }
 
 message GetBudgetStatusRequest {
@@ -135,4 +201,82 @@ message BudgetStatusResponse {
   double budgetAmount = 4;
   double spentAmount = 5;
   bool exceeded = 6;
+}
+
+message GetMonthlySummaryRequest {
+  int32 periodMonth = 1;
+  int32 periodYear = 2;
+}
+
+message CategoryExpenseSummary {
+  string categoryId = 1;
+  double amount = 2;
+}
+
+message CurrencyMonthlySummary {
+  string currency = 1;
+  double totalIncome = 2;
+  double totalExpense = 3;
+  double netAmount = 4;
+  repeated CategoryExpenseSummary expensesByCategory = 5;
+}
+
+message GetMonthlySummaryResponse {
+  repeated CurrencyMonthlySummary summaries = 1;
+}
+
+message CreateRecurringItemRequest {
+  string name = 1;
+  double amount = 2;
+  string kind = 3;
+  string accountId = 4;
+  string categoryId = 5;
+  int32 dayOfMonth = 6;
+  string mode = 7;
+}
+
+message UpdateRecurringItemRequest {
+  string recurringItemId = 1;
+  string name = 2;
+  double amount = 3;
+  string kind = 4;
+  string accountId = 5;
+  string categoryId = 6;
+  int32 dayOfMonth = 7;
+  string mode = 8;
+  bool active = 9;
+}
+
+message DeleteRecurringItemRequest {
+  string recurringItemId = 1;
+}
+
+message DeleteRecurringItemResponse {
+  bool deleted = 1;
+}
+
+message RecurringItemResponse {
+  string recurringItemId = 1;
+  string userId = 2;
+  string name = 3;
+  double amount = 4;
+  string kind = 5;
+  string accountId = 6;
+  string categoryId = 7;
+  int32 dayOfMonth = 8;
+  string mode = 9;
+  bool active = 10;
+}
+
+message ListRecurringItemsRequest {}
+
+message ListRecurringItemsResponse {
+  repeated RecurringItemResponse items = 1;
+}
+
+message ProcessRecurringItemsRequest {}
+
+message ProcessRecurringItemsResponse {
+  repeated RecurringItemResponse pendingReminders = 1;
+  repeated TransactionResponse generatedTransactions = 2;
 }

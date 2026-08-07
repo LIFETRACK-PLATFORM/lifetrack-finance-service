@@ -11,6 +11,7 @@ export type CreateTransactionInput = {
   kind: TransactionKind;
   description?: string;
   occurredAt: Date;
+  recurringItemId?: string;
 };
 
 export type UpdateTransactionInput = {
@@ -27,6 +28,19 @@ export type ListTransactionsFilter = {
   toDate?: Date;
 };
 
+export type CategoryExpenseSummary = {
+  categoryId: string;
+  amount: number;
+};
+
+export type CurrencyMonthlySummary = {
+  currency: string;
+  totalIncome: number;
+  totalExpense: number;
+  netAmount: number;
+  expensesByCategory: CategoryExpenseSummary[];
+};
+
 export interface TransactionRepositoryPort {
   findById(id: string): Promise<TransactionEntity | null>;
   findByIdAndUserId(
@@ -37,11 +51,22 @@ export interface TransactionRepositoryPort {
   create(data: CreateTransactionInput): Promise<TransactionEntity>;
   update(id: string, data: UpdateTransactionInput): Promise<TransactionEntity>;
   delete(id: string): Promise<void>;
-  /** Suma de gastos (EXPENSE) de una categoría dentro de un mes/año, usada por GetBudgetStatus. */
   sumExpensesByCategoryAndPeriod(
     userId: string,
     categoryId: string,
     periodMonth: number,
     periodYear: number,
   ): Promise<number>;
+  existsForRecurringInPeriod(
+    recurringItemId: string,
+    periodMonth: number,
+    periodYear: number,
+  ): Promise<boolean>;
+  countByAccountId(accountId: string): Promise<number>;
+  countByCategoryId(categoryId: string): Promise<number>;
+  getMonthlySummaryData(
+    userId: string,
+    periodMonth: number,
+    periodYear: number,
+  ): Promise<CurrencyMonthlySummary[]>;
 }

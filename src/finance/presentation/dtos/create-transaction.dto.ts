@@ -26,4 +26,8 @@ export class CreateTransactionDto {
 
   @IsDateString()
   occurredAt: string;
+
+  @IsOptional()
+  @IsString()
+  recurringItemId?: string;
 }

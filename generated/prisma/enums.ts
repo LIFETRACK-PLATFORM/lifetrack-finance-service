@@ -33,3 +33,11 @@ export const TransactionKind = {
 } as const
 
 export type TransactionKind = (typeof TransactionKind)[keyof typeof TransactionKind]
+
+
+export const RecurringMode = {
+  AUTO: 'AUTO',
+  REMIND: 'REMIND'
+} as const
+
+export type RecurringMode = (typeof RecurringMode)[keyof typeof RecurringMode]

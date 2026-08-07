@@ -39,4 +39,16 @@ export class CategoryEntity extends AggregateRoot<CategoryProps> {
   get color(): string | undefined {
     return this.props.color;
   }
+
+  updateMetadata(data: {
+    name: string;
+    icon?: string;
+    color?: string;
+  }): void {
+    if (!data.name)
+      throw new InvalidFinanceEntityDataError('name es obligatorio');
+    this.props.name = data.name;
+    this.props.icon = data.icon;
+    this.props.color = data.color;
+  }
 }

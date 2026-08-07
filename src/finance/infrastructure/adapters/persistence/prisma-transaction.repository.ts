@@ -3,6 +3,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { TransactionEntity } from '../../../domain/entities/transaction.entity';
 import type {
   CreateTransactionInput,
+  CurrencyMonthlySummary,
   ListTransactionsFilter,
   TransactionRepositoryPort,
   UpdateTransactionInput,
@@ -54,6 +55,7 @@ export class PrismaTransactionRepository implements TransactionRepositoryPort {
         kind: data.kind,
         description: data.description,
         occurredAt: data.occurredAt,
+        recurringItemId: data.recurringItemId,
       },
     });
     return TransactionMapper.toDomain(raw);
@@ -98,5 +100,87 @@ export class PrismaTransactionRepository implements TransactionRepositoryPort {
     });
 
     return result._sum.amount ?? 0;
+  }
+
+  async existsForRecurringInPeriod(
+    recurringItemId: string,
+    periodMonth: number,
+    periodYear: number,
+  ): Promise<boolean> {
+    const from = new Date(Date.UTC(periodYear, periodMonth - 1, 1));
+    const to = new Date(Date.UTC(periodYear, periodMonth, 1));
+
+    const count = await this.prisma.transaction.count({
+      where: {
+        recurringItemId,
+        occurredAt: { gte: from, lt: to },
+      },
+    });
+
+    return count > 0;
+  }
+
+  async countByAccountId(accountId: string): Promise<number> {
+    return this.prisma.transaction.count({ where: { accountId } });
+  }
+
+  async countByCategoryId(categoryId: string): Promise<number> {
+    return this.prisma.transaction.count({ where: { categoryId } });
+  }
+
+  async getMonthlySummaryData(
+    userId: string,
+    periodMonth: number,
+    periodYear: number,
+  ): Promise<CurrencyMonthlySummary[]> {
+    const from = new Date(Date.UTC(periodYear, periodMonth - 1, 1));
+    const to = new Date(Date.UTC(periodYear, periodMonth, 1));
+
+    const rows = await this.prisma.transaction.findMany({
+      where: {
+        userId,
+        occurredAt: { gte: from, lt: to },
+      },
+      include: { account: true },
+    });
+
+    const byCurrency = new Map<
+      string,
+      {
+        totalIncome: number;
+        totalExpense: number;
+        expensesByCategory: Map<string, number>;
+      }
+    >();
+
+    for (const row of rows) {
+      const currency = row.account.currency;
+      if (!byCurrency.has(currency)) {
+        byCurrency.set(currency, {
+          totalIncome: 0,
+          totalExpense: 0,
+          expensesByCategory: new Map(),
+        });
+      }
+      const entry = byCurrency.get(currency)!;
+
+      if (row.kind === 'INCOME') {
+        entry.totalIncome += row.amount;
+      } else {
+        entry.totalExpense += row.amount;
+        const prev = entry.expensesByCategory.get(row.categoryId) ?? 0;
+        entry.expensesByCategory.set(row.categoryId, prev + row.amount);
+      }
+    }
+
+    return Array.from(byCurrency.entries()).map(([currency, data]) => ({
+      currency,
+      totalIncome: data.totalIncome,
+      totalExpense: data.totalExpense,
+      netAmount: data.totalIncome - data.totalExpense,
+      expensesByCategory: Array.from(data.expensesByCategory.entries()).map(
+        ([categoryId, amount]) => ({ categoryId, amount }),
+      ),
+    }));
   }
 }

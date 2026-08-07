@@ -28,6 +28,11 @@ enum TransactionKind {
   EXPENSE
 }
 
+enum RecurringMode {
+  AUTO
+  REMIND
+}
+
 model Account {
   id        String      @id @default(uuid())
   userId    String
@@ -38,7 +43,8 @@ model Account {
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
 
-  transactions Transaction[]
+  transactions   Transaction[]
+  recurringItems RecurringItem[]
 
   @@index([userId])
 }
@@ -52,28 +58,32 @@ model Category {
   color     String?
   createdAt DateTime     @default(now())
 
-  transactions Transaction[]
-  budgets      Budget[]
+  transactions   Transaction[]
+  budgets        Budget[]
+  recurringItems RecurringItem[]
 
   @@index([userId])
 }
 
 model Transaction {
-  id          String          @id @default(uuid())
-  userId      String
-  accountId   String
-  account     Account         @relation(fields: [accountId], references: [id])
-  categoryId  String
-  category    Category        @relation(fields: [categoryId], references: [id])
-  amount      Float
-  kind        TransactionKind
-  description String?
-  occurredAt  DateTime
-  createdAt   DateTime        @default(now())
+  id              String          @id @default(uuid())
+  userId          String
+  accountId       String
+  account         Account         @relation(fields: [accountId], references: [id])
+  categoryId      String
+  category        Category        @relation(fields: [categoryId], references: [id])
+  amount          Float
+  kind            TransactionKind
+  description     String?
+  occurredAt      DateTime
+  recurringItemId String?
+  recurringItem   RecurringItem?  @relation(fields: [recurringItemId], references: [id])
+  createdAt       DateTime        @default(now())
 
   @@index([userId])
   @@index([accountId])
   @@index([categoryId, occurredAt])
+  @@index([recurringItemId, occurredAt])
 }
 
 model Budget {
@@ -88,4 +98,27 @@ model Budget {
 
   @@unique([categoryId, periodMonth, periodYear])
   @@index([userId])
+}
+
+model RecurringItem {
+  id                 String          @id @default(uuid())
+  userId             String
+  name               String
+  amount             Float
+  kind               TransactionKind
+  accountId          String
+  account            Account         @relation(fields: [accountId], references: [id])
+  categoryId         String
+  category           Category        @relation(fields: [categoryId], references: [id])
+  dayOfMonth         Int
+  mode               RecurringMode
+  active             Boolean         @default(true)
+  lastGeneratedMonth Int?
+  lastGeneratedYear  Int?
+  createdAt          DateTime        @default(now())
+
+  transactions Transaction[]
+
+  @@index([userId])
+  @@index([userId, active])
 }

@@ -26,8 +26,44 @@ export class BudgetNotFoundError extends DomainError {
   }
 }
 
+export class BudgetByIdNotFoundError extends DomainError {
+  constructor(budgetId: string) {
+    super(`El presupuesto ${budgetId} no existe`);
+  }
+}
+
 export class InvalidFinanceEntityDataError extends DomainError {
   constructor(message: string) {
     super(message);
+  }
+}
+
+export class AccountHasTransactionsError extends DomainError {
+  constructor(accountId: string) {
+    super(
+      `No se puede eliminar la cuenta ${accountId} porque tiene transacciones asociadas`,
+    );
+  }
+}
+
+export class CategoryInUseError extends DomainError {
+  constructor(categoryId: string) {
+    super(
+      `No se puede eliminar la categoría ${categoryId} porque está en uso`,
+    );
+  }
+}
+
+export class UnsupportedCurrencyError extends DomainError {
+  constructor(currency: string) {
+    super(
+      `La moneda ${currency} no está soportada. Use: PEN o USD`,
+    );
+  }
+}
+
+export class RecurringItemNotFoundError extends DomainError {
+  constructor(recurringItemId: string) {
+    super(`El ítem recurrente ${recurringItemId} no existe`);
   }
 }
