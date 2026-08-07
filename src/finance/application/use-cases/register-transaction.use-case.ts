@@ -45,6 +45,7 @@ export class RegisterTransactionUseCase {
       kind: input.kind,
       description: input.description,
       occurredAt,
+      recurringItemId: input.recurringItemId,
     });
 
     const newBalance = account.applyDelta(input.kind, input.amount);

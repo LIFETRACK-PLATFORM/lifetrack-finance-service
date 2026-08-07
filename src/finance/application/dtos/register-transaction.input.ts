@@ -8,4 +8,5 @@ export type RegisterTransactionInput = {
   kind: TransactionKind;
   description?: string;
   occurredAt: string;
+  recurringItemId?: string;
 };

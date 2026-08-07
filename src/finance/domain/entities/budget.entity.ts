@@ -44,4 +44,10 @@ export class BudgetEntity extends AggregateRoot<BudgetProps> {
   isExceededBy(spentAmount: number): boolean {
     return spentAmount > this.props.amount;
   }
+
+  updateAmount(amount: number): void {
+    if (amount <= 0)
+      throw new InvalidFinanceEntityDataError('amount debe ser mayor que cero');
+    this.props.amount = amount;
+  }
 }

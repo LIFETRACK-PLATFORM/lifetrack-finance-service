@@ -4,6 +4,7 @@ import { AccountEntity } from '../../../domain/entities/account.entity';
 import type {
   AccountRepositoryPort,
   CreateAccountInput,
+  UpdateAccountInput,
 } from '../../../domain/ports/account.repository.port';
 import { AccountMapper } from './account.mapper';
 
@@ -45,6 +46,22 @@ export class PrismaAccountRepository implements AccountRepositoryPort {
       },
     });
     return AccountMapper.toDomain(raw);
+  }
+
+  async update(id: string, data: UpdateAccountInput): Promise<AccountEntity> {
+    const raw = await this.prisma.account.update({
+      where: { id },
+      data: {
+        name: data.name,
+        type: data.type,
+        currency: data.currency,
+      },
+    });
+    return AccountMapper.toDomain(raw);
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.prisma.account.delete({ where: { id } });
   }
 
   async updateBalance(id: string, balance: number): Promise<AccountEntity> {

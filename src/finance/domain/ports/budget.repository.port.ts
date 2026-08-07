@@ -8,12 +8,28 @@ export type CreateBudgetInput = {
   periodYear: number;
 };
 
+export type UpdateBudgetInput = {
+  amount: number;
+};
+
 export interface BudgetRepositoryPort {
+  findById(id: string): Promise<BudgetEntity | null>;
+  findByIdAndUserId(
+    id: string,
+    userId: string,
+  ): Promise<BudgetEntity | null>;
   findByCategoryAndPeriod(
     userId: string,
     categoryId: string,
     periodMonth: number,
     periodYear: number,
   ): Promise<BudgetEntity | null>;
+  listByUserIdAndPeriod(
+    userId: string,
+    periodMonth: number,
+    periodYear: number,
+  ): Promise<BudgetEntity[]>;
   create(data: CreateBudgetInput): Promise<BudgetEntity>;
+  update(id: string, data: UpdateBudgetInput): Promise<BudgetEntity>;
+  delete(id: string): Promise<void>;
 }

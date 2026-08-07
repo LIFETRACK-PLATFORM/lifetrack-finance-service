@@ -1,5 +1,8 @@
 import { AggregateRoot } from '../../../shared/domain/building-blocks/AggregateRoot';
-import { InvalidFinanceEntityDataError } from '../exceptions/finance.errors';
+import {
+  InvalidFinanceEntityDataError,
+  UnsupportedCurrencyError,
+} from '../exceptions/finance.errors';
 import { TransactionKind } from './transaction.entity';
 
 export enum AccountType {
@@ -8,6 +11,9 @@ export enum AccountType {
   CARD = 'CARD',
   OTHER = 'OTHER',
 }
+
+export const SUPPORTED_CURRENCIES = ['PEN', 'USD'] as const;
+export type SupportedCurrency = (typeof SUPPORTED_CURRENCIES)[number];
 
 export type AccountProps = {
   userId: string;
@@ -27,7 +33,27 @@ export class AccountEntity extends AggregateRoot<AccountProps> {
       throw new InvalidFinanceEntityDataError('name es obligatorio');
     if (!props.currency)
       throw new InvalidFinanceEntityDataError('currency es obligatorio');
+    AccountEntity.validateCurrency(props.currency);
     super(props, id);
+  }
+
+  static validateCurrency(currency: string): void {
+    if (!SUPPORTED_CURRENCIES.includes(currency as SupportedCurrency)) {
+      throw new UnsupportedCurrencyError(currency);
+    }
+  }
+
+  updateMetadata(data: {
+    name: string;
+    type: AccountType;
+    currency: string;
+  }): void {
+    if (!data.name)
+      throw new InvalidFinanceEntityDataError('name es obligatorio');
+    AccountEntity.validateCurrency(data.currency);
+    this.props.name = data.name;
+    this.props.type = data.type;
+    this.props.currency = data.currency;
   }
 
   get userId(): string {

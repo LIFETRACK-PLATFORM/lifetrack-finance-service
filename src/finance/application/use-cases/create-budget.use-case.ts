@@ -16,6 +16,27 @@ export class CreateBudgetUseCase {
     );
     if (!category) throw new CategoryNotFoundError(input.categoryId);
 
+    const existing = await this.budgetRepository.findByCategoryAndPeriod(
+      input.userId,
+      input.categoryId,
+      input.periodMonth,
+      input.periodYear,
+    );
+
+    if (existing) {
+      existing.updateAmount(input.amount);
+      const budget = await this.budgetRepository.update(existing.id, {
+        amount: existing.amount,
+      });
+      return {
+        budgetId: budget.id,
+        categoryId: budget.categoryId,
+        amount: budget.amount,
+        periodMonth: budget.periodMonth,
+        periodYear: budget.periodYear,
+      };
+    }
+
     const budget = await this.budgetRepository.create({
       userId: input.userId,
       categoryId: input.categoryId,

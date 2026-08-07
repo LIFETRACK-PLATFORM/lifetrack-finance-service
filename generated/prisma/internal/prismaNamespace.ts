@@ -400,7 +400,8 @@ export const ModelName = {
   Account: 'Account',
   Category: 'Category',
   Transaction: 'Transaction',
-  Budget: 'Budget'
+  Budget: 'Budget',
+  RecurringItem: 'RecurringItem'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -416,7 +417,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "account" | "category" | "transaction" | "budget"
+    modelProps: "account" | "category" | "transaction" | "budget" | "recurringItem"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -716,6 +717,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    RecurringItem: {
+      payload: Prisma.$RecurringItemPayload<ExtArgs>
+      fields: Prisma.RecurringItemFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RecurringItemFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecurringItemPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RecurringItemFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecurringItemPayload>
+        }
+        findFirst: {
+          args: Prisma.RecurringItemFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecurringItemPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RecurringItemFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecurringItemPayload>
+        }
+        findMany: {
+          args: Prisma.RecurringItemFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecurringItemPayload>[]
+        }
+        create: {
+          args: Prisma.RecurringItemCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecurringItemPayload>
+        }
+        createMany: {
+          args: Prisma.RecurringItemCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RecurringItemCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecurringItemPayload>[]
+        }
+        delete: {
+          args: Prisma.RecurringItemDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecurringItemPayload>
+        }
+        update: {
+          args: Prisma.RecurringItemUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecurringItemPayload>
+        }
+        deleteMany: {
+          args: Prisma.RecurringItemDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RecurringItemUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RecurringItemUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecurringItemPayload>[]
+        }
+        upsert: {
+          args: Prisma.RecurringItemUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RecurringItemPayload>
+        }
+        aggregate: {
+          args: Prisma.RecurringItemAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRecurringItem>
+        }
+        groupBy: {
+          args: Prisma.RecurringItemGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RecurringItemGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RecurringItemCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RecurringItemCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -791,6 +866,7 @@ export const TransactionScalarFieldEnum = {
   kind: 'kind',
   description: 'description',
   occurredAt: 'occurredAt',
+  recurringItemId: 'recurringItemId',
   createdAt: 'createdAt'
 } as const
 
@@ -808,6 +884,25 @@ export const BudgetScalarFieldEnum = {
 } as const
 
 export type BudgetScalarFieldEnum = (typeof BudgetScalarFieldEnum)[keyof typeof BudgetScalarFieldEnum]
+
+
+export const RecurringItemScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  amount: 'amount',
+  kind: 'kind',
+  accountId: 'accountId',
+  categoryId: 'categoryId',
+  dayOfMonth: 'dayOfMonth',
+  mode: 'mode',
+  active: 'active',
+  lastGeneratedMonth: 'lastGeneratedMonth',
+  lastGeneratedYear: 'lastGeneratedYear',
+  createdAt: 'createdAt'
+} as const
+
+export type RecurringItemScalarFieldEnum = (typeof RecurringItemScalarFieldEnum)[keyof typeof RecurringItemScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -935,6 +1030,27 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'RecurringMode'
+ */
+export type EnumRecurringModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RecurringMode'>
+    
+
+
+/**
+ * Reference to a field of type 'RecurringMode[]'
+ */
+export type ListEnumRecurringModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RecurringMode[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 /**
@@ -1092,6 +1208,7 @@ export type GlobalOmitConfig = {
   category?: Prisma.CategoryOmit
   transaction?: Prisma.TransactionOmit
   budget?: Prisma.BudgetOmit
+  recurringItem?: Prisma.RecurringItemOmit
 }
 
 /* Types for Logging */
