@@ -1,6 +1,10 @@
 pipeline {
   agent any
 
+  options {
+    disableConcurrentBuilds()
+  }
+
   tools {
     nodejs "NodeJS-20"
   }
@@ -60,18 +64,15 @@ pipeline {
 
     stage("Docker Build") {
       steps {
-        lock('docker-build') {
-          sh "docker build -t finance-service:latest ."
-        }
+        sh "docker buildx build --builder lifetrack-builder -t finance-service:latest --load ."
       }
     }
   }
 
   post {
     always {
-      lock('docker-build') {
-        sh 'docker image prune -f'
-      }
+      sh 'docker image prune -af || true'
+      sh 'docker buildx prune -af --builder lifetrack-builder || true'
     }
     success {
       echo "Pipeline OK - finance-service #${env.BUILD_NUMBER}"
