@@ -32,4 +32,5 @@ export interface BudgetRepositoryPort {
   create(data: CreateBudgetInput): Promise<BudgetEntity>;
   update(id: string, data: UpdateBudgetInput): Promise<BudgetEntity>;
   delete(id: string): Promise<void>;
+  countByCategoryId(categoryId: string): Promise<number>;
 }

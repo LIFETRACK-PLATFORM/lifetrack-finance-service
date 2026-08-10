@@ -49,4 +49,5 @@ export interface RecurringItemRepositoryPort {
     data: UpdateRecurringItemGenerationInput,
   ): Promise<RecurringItemEntity>;
   deactivate(id: string): Promise<RecurringItemEntity>;
+  countByCategoryId(categoryId: string): Promise<number>;
 }

@@ -124,8 +124,21 @@ import type { EventPublisherPort } from './domain/ports/event.publisher.port';
       useFactory: (
         categoryRepo: CategoryRepositoryPort,
         transactionRepo: TransactionRepositoryPort,
-      ) => new DeleteCategoryUseCase(categoryRepo, transactionRepo),
-      inject: [CATEGORY_REPOSITORY, TRANSACTION_REPOSITORY],
+        recurringItemRepo: RecurringItemRepositoryPort,
+        budgetRepo: BudgetRepositoryPort,
+      ) =>
+        new DeleteCategoryUseCase(
+          categoryRepo,
+          transactionRepo,
+          recurringItemRepo,
+          budgetRepo,
+        ),
+      inject: [
+        CATEGORY_REPOSITORY,
+        TRANSACTION_REPOSITORY,
+        RECURRING_ITEM_REPOSITORY,
+        BUDGET_REPOSITORY,
+      ],
     },
     {
       provide: RegisterTransactionUseCase,
