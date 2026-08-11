@@ -23,9 +23,7 @@ describe('GetMonthlySummaryUseCase', () => {
         },
       ]),
     };
-    const useCase = new GetMonthlySummaryUseCase(
-      transactionRepository as any,
-    );
+    const useCase = new GetMonthlySummaryUseCase(transactionRepository as any);
 
     const result = await useCase.execute({
       userId: 'user-1',

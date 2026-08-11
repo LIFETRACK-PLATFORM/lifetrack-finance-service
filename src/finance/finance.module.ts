@@ -24,10 +24,21 @@ import {
   UpdateRecurringItemUseCase,
 } from './application/use-cases/recurring-item.use-cases';
 import { ProcessRecurringItemsUseCase } from './application/use-cases/process-recurring-items.use-case';
+import { DetectRecurringCandidatesUseCase } from './application/use-cases/detect-recurring-candidates.use-case';
+import {
+  CreateDebtUseCase,
+  DeleteDebtUseCase,
+  ListDebtsUseCase,
+  UpdateDebtUseCase,
+} from './application/use-cases/debt.use-cases';
+import { RegisterDebtPaymentUseCase } from './application/use-cases/register-debt-payment.use-case';
+import { AdjustDebtBalanceUseCase } from './application/use-cases/adjust-debt-balance.use-case';
+import { GetDebtsSummaryUseCase } from './application/use-cases/get-debts-summary.use-case';
 import {
   ACCOUNT_REPOSITORY,
   BUDGET_REPOSITORY,
   CATEGORY_REPOSITORY,
+  DEBT_REPOSITORY,
   EVENT_PUBLISHER,
   RECURRING_ITEM_REPOSITORY,
   TRANSACTION_REPOSITORY,
@@ -38,6 +49,7 @@ import { PrismaCategoryRepository } from './infrastructure/adapters/persistence/
 import { PrismaTransactionRepository } from './infrastructure/adapters/persistence/prisma-transaction.repository';
 import { PrismaBudgetRepository } from './infrastructure/adapters/persistence/prisma-budget.repository';
 import { PrismaRecurringItemRepository } from './infrastructure/adapters/persistence/prisma-recurring-item.repository';
+import { PrismaDebtRepository } from './infrastructure/adapters/persistence/prisma-debt.repository';
 import { NatsEventPublisher } from './infrastructure/adapters/messaging/nats-event.publisher';
 import { FinanceController } from './presentation/controllers/finance.controller';
 import type { AccountRepositoryPort } from './domain/ports/account.repository.port';
@@ -45,6 +57,7 @@ import type { CategoryRepositoryPort } from './domain/ports/category.repository.
 import type { TransactionRepositoryPort } from './domain/ports/transaction.repository.port';
 import type { BudgetRepositoryPort } from './domain/ports/budget.repository.port';
 import type { RecurringItemRepositoryPort } from './domain/ports/recurring-item.repository.port';
+import type { DebtRepositoryPort } from './domain/ports/debt.repository.port';
 import type { EventPublisherPort } from './domain/ports/event.publisher.port';
 
 @Module({
@@ -70,6 +83,10 @@ import type { EventPublisherPort } from './domain/ports/event.publisher.port';
     {
       provide: RECURRING_ITEM_REPOSITORY,
       useClass: PrismaRecurringItemRepository,
+    },
+    {
+      provide: DEBT_REPOSITORY,
+      useClass: PrismaDebtRepository,
     },
     {
       provide: EVENT_PUBLISHER,
@@ -291,6 +308,68 @@ import type { EventPublisherPort } from './domain/ports/event.publisher.port';
         TRANSACTION_REPOSITORY,
         ACCOUNT_REPOSITORY,
       ],
+    },
+    {
+      provide: DetectRecurringCandidatesUseCase,
+      useFactory: (
+        transactionRepo: TransactionRepositoryPort,
+        recurringRepo: RecurringItemRepositoryPort,
+      ) => new DetectRecurringCandidatesUseCase(transactionRepo, recurringRepo),
+      inject: [TRANSACTION_REPOSITORY, RECURRING_ITEM_REPOSITORY],
+    },
+    {
+      provide: CreateDebtUseCase,
+      useFactory: (
+        debtRepo: DebtRepositoryPort,
+        accountRepo: AccountRepositoryPort,
+        categoryRepo: CategoryRepositoryPort,
+      ) => new CreateDebtUseCase(debtRepo, accountRepo, categoryRepo),
+      inject: [DEBT_REPOSITORY, ACCOUNT_REPOSITORY, CATEGORY_REPOSITORY],
+    },
+    {
+      provide: UpdateDebtUseCase,
+      useFactory: (
+        debtRepo: DebtRepositoryPort,
+        accountRepo: AccountRepositoryPort,
+        categoryRepo: CategoryRepositoryPort,
+      ) => new UpdateDebtUseCase(debtRepo, accountRepo, categoryRepo),
+      inject: [DEBT_REPOSITORY, ACCOUNT_REPOSITORY, CATEGORY_REPOSITORY],
+    },
+    {
+      provide: DeleteDebtUseCase,
+      useFactory: (
+        debtRepo: DebtRepositoryPort,
+        transactionRepo: TransactionRepositoryPort,
+      ) => new DeleteDebtUseCase(debtRepo, transactionRepo),
+      inject: [DEBT_REPOSITORY, TRANSACTION_REPOSITORY],
+    },
+    {
+      provide: ListDebtsUseCase,
+      useFactory: (debtRepo: DebtRepositoryPort) =>
+        new ListDebtsUseCase(debtRepo),
+      inject: [DEBT_REPOSITORY],
+    },
+    {
+      provide: RegisterDebtPaymentUseCase,
+      useFactory: (
+        debtRepo: DebtRepositoryPort,
+        accountRepo: AccountRepositoryPort,
+        transactionRepo: TransactionRepositoryPort,
+      ) =>
+        new RegisterDebtPaymentUseCase(debtRepo, accountRepo, transactionRepo),
+      inject: [DEBT_REPOSITORY, ACCOUNT_REPOSITORY, TRANSACTION_REPOSITORY],
+    },
+    {
+      provide: AdjustDebtBalanceUseCase,
+      useFactory: (debtRepo: DebtRepositoryPort) =>
+        new AdjustDebtBalanceUseCase(debtRepo),
+      inject: [DEBT_REPOSITORY],
+    },
+    {
+      provide: GetDebtsSummaryUseCase,
+      useFactory: (debtRepo: DebtRepositoryPort) =>
+        new GetDebtsSummaryUseCase(debtRepo),
+      inject: [DEBT_REPOSITORY],
     },
   ],
 })

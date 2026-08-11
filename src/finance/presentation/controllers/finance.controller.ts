@@ -26,6 +26,16 @@ import {
   UpdateRecurringItemUseCase,
 } from '../../application/use-cases/recurring-item.use-cases';
 import { ProcessRecurringItemsUseCase } from '../../application/use-cases/process-recurring-items.use-case';
+import { DetectRecurringCandidatesUseCase } from '../../application/use-cases/detect-recurring-candidates.use-case';
+import {
+  CreateDebtUseCase,
+  DeleteDebtUseCase,
+  ListDebtsUseCase,
+  UpdateDebtUseCase,
+} from '../../application/use-cases/debt.use-cases';
+import { RegisterDebtPaymentUseCase } from '../../application/use-cases/register-debt-payment.use-case';
+import { AdjustDebtBalanceUseCase } from '../../application/use-cases/adjust-debt-balance.use-case';
+import { GetDebtsSummaryUseCase } from '../../application/use-cases/get-debts-summary.use-case';
 import { CreateAccountDto } from '../dtos/create-account.dto';
 import { CreateCategoryDto } from '../dtos/create-category.dto';
 import { CreateTransactionDto } from '../dtos/create-transaction.dto';
@@ -35,7 +45,10 @@ import { ListTransactionsDto } from '../dtos/list-transactions.dto';
 import { CreateBudgetDto } from '../dtos/create-budget.dto';
 import { GetBudgetStatusDto } from '../dtos/get-budget-status.dto';
 import { UpdateAccountDto, DeleteAccountDto } from '../dtos/update-account.dto';
-import { UpdateCategoryDto, DeleteCategoryDto } from '../dtos/update-category.dto';
+import {
+  UpdateCategoryDto,
+  DeleteCategoryDto,
+} from '../dtos/update-category.dto';
 import {
   DeleteBudgetDto,
   ListBudgetsDto,
@@ -47,6 +60,14 @@ import {
   DeleteRecurringItemDto,
   UpdateRecurringItemDto,
 } from '../dtos/recurring-item.dto';
+import {
+  AdjustDebtBalanceDto,
+  CreateDebtDto,
+  DeleteDebtDto,
+  GetDebtsSummaryDto,
+  RegisterDebtPaymentDto,
+  UpdateDebtDto,
+} from '../dtos/debt.dto';
 import { DomainExceptionFilter } from '../filters/domain-exception.filter';
 import { getAuthenticatedUserId } from '../auth/grpc-auth.context';
 
@@ -77,6 +98,14 @@ export class FinanceController {
     private readonly deleteRecurringItemUseCase: DeleteRecurringItemUseCase,
     private readonly listRecurringItemsUseCase: ListRecurringItemsUseCase,
     private readonly processRecurringItemsUseCase: ProcessRecurringItemsUseCase,
+    private readonly detectRecurringCandidatesUseCase: DetectRecurringCandidatesUseCase,
+    private readonly createDebtUseCase: CreateDebtUseCase,
+    private readonly updateDebtUseCase: UpdateDebtUseCase,
+    private readonly deleteDebtUseCase: DeleteDebtUseCase,
+    private readonly listDebtsUseCase: ListDebtsUseCase,
+    private readonly registerDebtPaymentUseCase: RegisterDebtPaymentUseCase,
+    private readonly adjustDebtBalanceUseCase: AdjustDebtBalanceUseCase,
+    private readonly getDebtsSummaryUseCase: GetDebtsSummaryUseCase,
   ) {}
 
   @GrpcMethod('FinanceService', 'CreateAccount')
@@ -215,5 +244,53 @@ export class FinanceController {
   processRecurringItems(_data: Record<string, never>, metadata: Metadata) {
     const userId = getAuthenticatedUserId(metadata);
     return this.processRecurringItemsUseCase.execute({ userId });
+  }
+
+  @GrpcMethod('FinanceService', 'DetectRecurringCandidates')
+  detectRecurringCandidates(_data: Record<string, never>, metadata: Metadata) {
+    const userId = getAuthenticatedUserId(metadata);
+    return this.detectRecurringCandidatesUseCase.execute({ userId });
+  }
+
+  @GrpcMethod('FinanceService', 'CreateDebt')
+  createDebt(data: CreateDebtDto, metadata: Metadata) {
+    const userId = getAuthenticatedUserId(metadata);
+    return this.createDebtUseCase.execute({ userId, ...data });
+  }
+
+  @GrpcMethod('FinanceService', 'UpdateDebt')
+  updateDebt(data: UpdateDebtDto, metadata: Metadata) {
+    const userId = getAuthenticatedUserId(metadata);
+    return this.updateDebtUseCase.execute({ userId, ...data });
+  }
+
+  @GrpcMethod('FinanceService', 'DeleteDebt')
+  deleteDebt(data: DeleteDebtDto, metadata: Metadata) {
+    const userId = getAuthenticatedUserId(metadata);
+    return this.deleteDebtUseCase.execute({ userId, ...data });
+  }
+
+  @GrpcMethod('FinanceService', 'ListDebts')
+  listDebts(_data: Record<string, never>, metadata: Metadata) {
+    const userId = getAuthenticatedUserId(metadata);
+    return this.listDebtsUseCase.execute({ userId });
+  }
+
+  @GrpcMethod('FinanceService', 'RegisterDebtPayment')
+  registerDebtPayment(data: RegisterDebtPaymentDto, metadata: Metadata) {
+    const userId = getAuthenticatedUserId(metadata);
+    return this.registerDebtPaymentUseCase.execute({ userId, ...data });
+  }
+
+  @GrpcMethod('FinanceService', 'AdjustDebtBalance')
+  adjustDebtBalance(data: AdjustDebtBalanceDto, metadata: Metadata) {
+    const userId = getAuthenticatedUserId(metadata);
+    return this.adjustDebtBalanceUseCase.execute({ userId, ...data });
+  }
+
+  @GrpcMethod('FinanceService', 'GetDebtsSummary')
+  getDebtsSummary(data: GetDebtsSummaryDto, metadata: Metadata) {
+    const userId = getAuthenticatedUserId(metadata);
+    return this.getDebtsSummaryUseCase.execute({ userId, ...data });
   }
 }

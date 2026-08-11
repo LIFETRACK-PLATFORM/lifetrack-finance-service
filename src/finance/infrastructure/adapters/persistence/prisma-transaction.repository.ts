@@ -56,6 +56,7 @@ export class PrismaTransactionRepository implements TransactionRepositoryPort {
         description: data.description,
         occurredAt: data.occurredAt,
         recurringItemId: data.recurringItemId,
+        debtId: data.debtId,
       },
     });
     return TransactionMapper.toDomain(raw);
@@ -126,6 +127,10 @@ export class PrismaTransactionRepository implements TransactionRepositoryPort {
 
   async countByCategoryId(categoryId: string): Promise<number> {
     return this.prisma.transaction.count({ where: { categoryId } });
+  }
+
+  async countByDebtId(debtId: string): Promise<number> {
+    return this.prisma.transaction.count({ where: { debtId } });
   }
 
   async getMonthlySummaryData(

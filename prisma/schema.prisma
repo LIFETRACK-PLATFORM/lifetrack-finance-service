@@ -33,6 +33,18 @@ enum RecurringMode {
   REMIND
 }
 
+enum DebtType {
+  CREDIT_CARD
+  LOAN
+  OTHER
+}
+
+enum DebtStatus {
+  ACTIVE
+  PAID_OFF
+  ARCHIVED
+}
+
 model Account {
   id        String      @id @default(uuid())
   userId    String
@@ -45,6 +57,7 @@ model Account {
 
   transactions   Transaction[]
   recurringItems RecurringItem[]
+  debts          Debt[]
 
   @@index([userId])
 }
@@ -61,6 +74,7 @@ model Category {
   transactions   Transaction[]
   budgets        Budget[]
   recurringItems RecurringItem[]
+  debts          Debt[]
 
   @@index([userId])
 }
@@ -78,12 +92,15 @@ model Transaction {
   occurredAt      DateTime
   recurringItemId String?
   recurringItem   RecurringItem?  @relation(fields: [recurringItemId], references: [id])
+  debtId          String?
+  debt            Debt?           @relation(fields: [debtId], references: [id])
   createdAt       DateTime        @default(now())
 
   @@index([userId])
   @@index([accountId])
   @@index([categoryId, occurredAt])
   @@index([recurringItemId, occurredAt])
+  @@index([debtId, occurredAt])
 }
 
 model Budget {
@@ -121,4 +138,31 @@ model RecurringItem {
 
   @@index([userId])
   @@index([userId, active])
+}
+
+model Debt {
+  id               String     @id @default(uuid())
+  userId           String
+  name             String
+  lender           String?
+  type             DebtType   @default(OTHER)
+  currency         String
+  totalOwed        Float
+  originalAmount   Float?
+  minimumPayment   Float?
+  dueDay           Int?
+  accountId        String?
+  account          Account?   @relation(fields: [accountId], references: [id])
+  categoryId       String
+  category         Category   @relation(fields: [categoryId], references: [id])
+  status           DebtStatus @default(ACTIVE)
+  lastPaymentMonth Int?
+  lastPaymentYear  Int?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  transactions Transaction[]
+
+  @@index([userId])
+  @@index([userId, status])
 }

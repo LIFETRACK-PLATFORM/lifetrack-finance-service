@@ -12,6 +12,7 @@ export type CreateTransactionInput = {
   description?: string;
   occurredAt: Date;
   recurringItemId?: string;
+  debtId?: string;
 };
 
 export type UpdateTransactionInput = {
@@ -64,6 +65,7 @@ export interface TransactionRepositoryPort {
   ): Promise<boolean>;
   countByAccountId(accountId: string): Promise<number>;
   countByCategoryId(categoryId: string): Promise<number>;
+  countByDebtId(debtId: string): Promise<number>;
   getMonthlySummaryData(
     userId: string,
     periodMonth: number,

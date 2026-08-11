@@ -41,3 +41,21 @@ export const RecurringMode = {
 } as const
 
 export type RecurringMode = (typeof RecurringMode)[keyof typeof RecurringMode]
+
+
+export const DebtType = {
+  CREDIT_CARD: 'CREDIT_CARD',
+  LOAN: 'LOAN',
+  OTHER: 'OTHER'
+} as const
+
+export type DebtType = (typeof DebtType)[keyof typeof DebtType]
+
+
+export const DebtStatus = {
+  ACTIVE: 'ACTIVE',
+  PAID_OFF: 'PAID_OFF',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type DebtStatus = (typeof DebtStatus)[keyof typeof DebtStatus]

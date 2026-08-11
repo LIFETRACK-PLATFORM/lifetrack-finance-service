@@ -14,6 +14,7 @@ export type TransactionProps = {
   kind: TransactionKind;
   description?: string;
   occurredAt: Date;
+  debtId?: string;
   createdAt: Date;
 };
 
@@ -50,6 +51,9 @@ export class TransactionEntity extends AggregateRoot<TransactionProps> {
   }
   get occurredAt(): Date {
     return this.props.occurredAt;
+  }
+  get debtId(): string | undefined {
+    return this.props.debtId;
   }
 
   isExpense(): boolean {

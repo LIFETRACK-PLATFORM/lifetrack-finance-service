@@ -48,10 +48,7 @@ export class PrismaCategoryRepository implements CategoryRepositoryPort {
     return CategoryMapper.toDomain(raw);
   }
 
-  async update(
-    id: string,
-    data: UpdateCategoryInput,
-  ): Promise<CategoryEntity> {
+  async update(id: string, data: UpdateCategoryInput): Promise<CategoryEntity> {
     const raw = await this.prisma.category.update({
       where: { id },
       data: {
