@@ -9,13 +9,15 @@ import {
 } from '../../domain/entities/account.entity';
 import { TransactionKind } from '../../domain/entities/transaction.entity';
 
-function buildRecurringItem(overrides: Partial<{
-  id: string;
-  mode: RecurringMode;
-  dayOfMonth: number;
-  lastGeneratedMonth?: number;
-  lastGeneratedYear?: number;
-}> = {}) {
+function buildRecurringItem(
+  overrides: Partial<{
+    id: string;
+    mode: RecurringMode;
+    dayOfMonth: number;
+    lastGeneratedMonth?: number;
+    lastGeneratedYear?: number;
+  }> = {},
+) {
   return new RecurringItemEntity(
     {
       userId: 'user-1',
@@ -131,7 +133,10 @@ describe('ProcessRecurringItemsUseCase', () => {
   });
 
   it('devuelve pendientes REMIND sin crear transacción', async () => {
-    const item = buildRecurringItem({ mode: RecurringMode.REMIND, dayOfMonth: 5 });
+    const item = buildRecurringItem({
+      mode: RecurringMode.REMIND,
+      dayOfMonth: 5,
+    });
     const recurringItemRepository = {
       listActiveByUserId: jest.fn().mockResolvedValue([item]),
       updateGeneration: jest.fn(),

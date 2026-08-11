@@ -33,3 +33,18 @@ export type DeleteRecurringItemInput = {
 export type ProcessRecurringItemsInput = {
   userId: string;
 };
+
+export type DetectRecurringCandidatesInput = {
+  userId: string;
+};
+
+export type RecurringCandidate = {
+  accountId: string;
+  categoryId: string;
+  amount: number;
+  kind: TransactionKind;
+  dayOfMonth: number;
+  occurrences: number;
+  suggestedName: string;
+  lastOccurredAt: string;
+};

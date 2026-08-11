@@ -272,6 +272,67 @@ export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedIntNullableFilter<$PrismaModel>
 }
 
+export type EnumDebtTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.DebtType | Prisma.EnumDebtTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.DebtType[] | Prisma.ListEnumDebtTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DebtType[] | Prisma.ListEnumDebtTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDebtTypeFilter<$PrismaModel> | $Enums.DebtType
+}
+
+export type FloatNullableFilter<$PrismaModel = never> = {
+  equals?: number | Prisma.FloatFieldRefInput<$PrismaModel> | null
+  in?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
+  notIn?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
+  lt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  lte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedFloatNullableFilter<$PrismaModel> | number | null
+}
+
+export type EnumDebtStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.DebtStatus | Prisma.EnumDebtStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.DebtStatus[] | Prisma.ListEnumDebtStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DebtStatus[] | Prisma.ListEnumDebtStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDebtStatusFilter<$PrismaModel> | $Enums.DebtStatus
+}
+
+export type EnumDebtTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DebtType | Prisma.EnumDebtTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.DebtType[] | Prisma.ListEnumDebtTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DebtType[] | Prisma.ListEnumDebtTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDebtTypeWithAggregatesFilter<$PrismaModel> | $Enums.DebtType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDebtTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDebtTypeFilter<$PrismaModel>
+}
+
+export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: number | Prisma.FloatFieldRefInput<$PrismaModel> | null
+  in?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
+  notIn?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
+  lt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  lte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _avg?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+  _sum?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+}
+
+export type EnumDebtStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DebtStatus | Prisma.EnumDebtStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.DebtStatus[] | Prisma.ListEnumDebtStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DebtStatus[] | Prisma.ListEnumDebtStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDebtStatusWithAggregatesFilter<$PrismaModel> | $Enums.DebtStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDebtStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDebtStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -530,6 +591,56 @@ export type NestedFloatNullableFilter<$PrismaModel = never> = {
   gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   not?: Prisma.NestedFloatNullableFilter<$PrismaModel> | number | null
+}
+
+export type NestedEnumDebtTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.DebtType | Prisma.EnumDebtTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.DebtType[] | Prisma.ListEnumDebtTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DebtType[] | Prisma.ListEnumDebtTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDebtTypeFilter<$PrismaModel> | $Enums.DebtType
+}
+
+export type NestedEnumDebtStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.DebtStatus | Prisma.EnumDebtStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.DebtStatus[] | Prisma.ListEnumDebtStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DebtStatus[] | Prisma.ListEnumDebtStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDebtStatusFilter<$PrismaModel> | $Enums.DebtStatus
+}
+
+export type NestedEnumDebtTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DebtType | Prisma.EnumDebtTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.DebtType[] | Prisma.ListEnumDebtTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DebtType[] | Prisma.ListEnumDebtTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDebtTypeWithAggregatesFilter<$PrismaModel> | $Enums.DebtType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDebtTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDebtTypeFilter<$PrismaModel>
+}
+
+export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: number | Prisma.FloatFieldRefInput<$PrismaModel> | null
+  in?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
+  notIn?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
+  lt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  lte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _avg?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+  _sum?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumDebtStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DebtStatus | Prisma.EnumDebtStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.DebtStatus[] | Prisma.ListEnumDebtStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DebtStatus[] | Prisma.ListEnumDebtStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDebtStatusWithAggregatesFilter<$PrismaModel> | $Enums.DebtStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDebtStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDebtStatusFilter<$PrismaModel>
 }
 
 

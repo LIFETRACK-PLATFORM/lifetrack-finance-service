@@ -401,7 +401,8 @@ export const ModelName = {
   Category: 'Category',
   Transaction: 'Transaction',
   Budget: 'Budget',
-  RecurringItem: 'RecurringItem'
+  RecurringItem: 'RecurringItem',
+  Debt: 'Debt'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -417,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "account" | "category" | "transaction" | "budget" | "recurringItem"
+    modelProps: "account" | "category" | "transaction" | "budget" | "recurringItem" | "debt"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -791,6 +792,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Debt: {
+      payload: Prisma.$DebtPayload<ExtArgs>
+      fields: Prisma.DebtFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DebtFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DebtPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DebtFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DebtPayload>
+        }
+        findFirst: {
+          args: Prisma.DebtFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DebtPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DebtFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DebtPayload>
+        }
+        findMany: {
+          args: Prisma.DebtFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DebtPayload>[]
+        }
+        create: {
+          args: Prisma.DebtCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DebtPayload>
+        }
+        createMany: {
+          args: Prisma.DebtCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DebtCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DebtPayload>[]
+        }
+        delete: {
+          args: Prisma.DebtDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DebtPayload>
+        }
+        update: {
+          args: Prisma.DebtUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DebtPayload>
+        }
+        deleteMany: {
+          args: Prisma.DebtDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DebtUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DebtUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DebtPayload>[]
+        }
+        upsert: {
+          args: Prisma.DebtUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DebtPayload>
+        }
+        aggregate: {
+          args: Prisma.DebtAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDebt>
+        }
+        groupBy: {
+          args: Prisma.DebtGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DebtGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DebtCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DebtCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -867,6 +942,7 @@ export const TransactionScalarFieldEnum = {
   description: 'description',
   occurredAt: 'occurredAt',
   recurringItemId: 'recurringItemId',
+  debtId: 'debtId',
   createdAt: 'createdAt'
 } as const
 
@@ -903,6 +979,29 @@ export const RecurringItemScalarFieldEnum = {
 } as const
 
 export type RecurringItemScalarFieldEnum = (typeof RecurringItemScalarFieldEnum)[keyof typeof RecurringItemScalarFieldEnum]
+
+
+export const DebtScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  lender: 'lender',
+  type: 'type',
+  currency: 'currency',
+  totalOwed: 'totalOwed',
+  originalAmount: 'originalAmount',
+  minimumPayment: 'minimumPayment',
+  dueDay: 'dueDay',
+  accountId: 'accountId',
+  categoryId: 'categoryId',
+  status: 'status',
+  lastPaymentMonth: 'lastPaymentMonth',
+  lastPaymentYear: 'lastPaymentYear',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DebtScalarFieldEnum = (typeof DebtScalarFieldEnum)[keyof typeof DebtScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1051,6 +1150,34 @@ export type ListEnumRecurringModeFieldRefInput<$PrismaModel> = FieldRefInputType
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'DebtType'
+ */
+export type EnumDebtTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DebtType'>
+    
+
+
+/**
+ * Reference to a field of type 'DebtType[]'
+ */
+export type ListEnumDebtTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DebtType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'DebtStatus'
+ */
+export type EnumDebtStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DebtStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'DebtStatus[]'
+ */
+export type ListEnumDebtStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DebtStatus[]'>
     
 
 /**
@@ -1209,6 +1336,7 @@ export type GlobalOmitConfig = {
   transaction?: Prisma.TransactionOmit
   budget?: Prisma.BudgetOmit
   recurringItem?: Prisma.RecurringItemOmit
+  debt?: Prisma.DebtOmit
 }
 
 /* Types for Logging */

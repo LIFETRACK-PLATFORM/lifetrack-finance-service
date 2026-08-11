@@ -14,10 +14,7 @@ export type UpdateBudgetInput = {
 
 export interface BudgetRepositoryPort {
   findById(id: string): Promise<BudgetEntity | null>;
-  findByIdAndUserId(
-    id: string,
-    userId: string,
-  ): Promise<BudgetEntity | null>;
+  findByIdAndUserId(id: string, userId: string): Promise<BudgetEntity | null>;
   findByCategoryAndPeriod(
     userId: string,
     categoryId: string,
@@ -32,4 +29,5 @@ export interface BudgetRepositoryPort {
   create(data: CreateBudgetInput): Promise<BudgetEntity>;
   update(id: string, data: UpdateBudgetInput): Promise<BudgetEntity>;
   delete(id: string): Promise<void>;
+  countByCategoryId(categoryId: string): Promise<number>;
 }

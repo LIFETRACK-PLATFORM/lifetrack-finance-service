@@ -84,7 +84,9 @@ export class ProcessRecurringItemsUseCase {
       userId,
     );
     if (!account) {
-      throw new Error(`Cuenta ${item.accountId} no encontrada para ítem recurrente`);
+      throw new Error(
+        `Cuenta ${item.accountId} no encontrada para ítem recurrente`,
+      );
     }
 
     const transaction = await this.transactionRepository.create({

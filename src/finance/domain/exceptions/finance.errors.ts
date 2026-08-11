@@ -48,22 +48,36 @@ export class AccountHasTransactionsError extends DomainError {
 
 export class CategoryInUseError extends DomainError {
   constructor(categoryId: string) {
-    super(
-      `No se puede eliminar la categoría ${categoryId} porque está en uso`,
-    );
+    super(`No se puede eliminar la categoría ${categoryId} porque está en uso`);
   }
 }
 
 export class UnsupportedCurrencyError extends DomainError {
   constructor(currency: string) {
-    super(
-      `La moneda ${currency} no está soportada. Use: PEN o USD`,
-    );
+    super(`La moneda ${currency} no está soportada. Use: PEN o USD`);
   }
 }
 
 export class RecurringItemNotFoundError extends DomainError {
   constructor(recurringItemId: string) {
     super(`El ítem recurrente ${recurringItemId} no existe`);
+  }
+}
+
+export class DebtNotFoundError extends DomainError {
+  constructor(debtId: string) {
+    super(`La deuda ${debtId} no existe`);
+  }
+}
+
+export class DebtNotActiveError extends DomainError {
+  constructor(debtId: string) {
+    super(`La deuda ${debtId} no está activa`);
+  }
+}
+
+export class DebtArchivedError extends DomainError {
+  constructor(debtId: string) {
+    super(`La deuda ${debtId} está archivada`);
   }
 }

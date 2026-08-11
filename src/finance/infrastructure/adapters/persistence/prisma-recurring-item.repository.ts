@@ -101,4 +101,8 @@ export class PrismaRecurringItemRepository implements RecurringItemRepositoryPor
     });
     return RecurringItemMapper.toDomain(raw);
   }
+
+  async countByCategoryId(categoryId: string): Promise<number> {
+    return this.prisma.recurringItem.count({ where: { categoryId } });
+  }
 }

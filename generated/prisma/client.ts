@@ -64,3 +64,8 @@ export type Budget = Prisma.BudgetModel
  * 
  */
 export type RecurringItem = Prisma.RecurringItemModel
+/**
+ * Model Debt
+ * 
+ */
+export type Debt = Prisma.DebtModel

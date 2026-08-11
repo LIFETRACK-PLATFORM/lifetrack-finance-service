@@ -75,4 +75,8 @@ export class PrismaBudgetRepository implements BudgetRepositoryPort {
   async delete(id: string): Promise<void> {
     await this.prisma.budget.delete({ where: { id } });
   }
+
+  async countByCategoryId(categoryId: string): Promise<number> {
+    return this.prisma.budget.count({ where: { categoryId } });
+  }
 }
