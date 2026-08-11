@@ -1,5 +1,4 @@
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
-import { RpcException } from '@nestjs/microservices';
 import { status as GrpcStatus } from '@grpc/grpc-js';
 import { Observable, throwError } from 'rxjs';
 import {
@@ -9,6 +8,9 @@ import {
   BudgetNotFoundError,
   CategoryInUseError,
   CategoryNotFoundError,
+  DebtArchivedError,
+  DebtNotActiveError,
+  DebtNotFoundError,
   DomainError,
   RecurringItemNotFoundError,
   TransactionNotFoundError,
@@ -24,8 +26,11 @@ const ERROR_CODE_MAP = new Map<DomainErrorConstructor, GrpcStatus>([
   [BudgetNotFoundError, GrpcStatus.NOT_FOUND],
   [BudgetByIdNotFoundError, GrpcStatus.NOT_FOUND],
   [RecurringItemNotFoundError, GrpcStatus.NOT_FOUND],
+  [DebtNotFoundError, GrpcStatus.NOT_FOUND],
   [AccountHasTransactionsError, GrpcStatus.FAILED_PRECONDITION],
   [CategoryInUseError, GrpcStatus.FAILED_PRECONDITION],
+  [DebtNotActiveError, GrpcStatus.FAILED_PRECONDITION],
+  [DebtArchivedError, GrpcStatus.FAILED_PRECONDITION],
   [UnsupportedCurrencyError, GrpcStatus.INVALID_ARGUMENT],
 ]);
 
@@ -36,8 +41,12 @@ export class DomainExceptionFilter implements ExceptionFilter {
       ERROR_CODE_MAP.get(exception.constructor as DomainErrorConstructor) ??
       GrpcStatus.INVALID_ARGUMENT;
 
-    return throwError(
-      () => new RpcException({ code, message: exception.message }),
-    );
+    // No envolver en `new RpcException(...)`: el transporte gRPC de NestJS
+    // reenvía el error de esta observable tal cual al callback de grpc-js,
+    // que solo respeta `error.code` si es una propiedad directa del objeto
+    // (ver server-call.js#serverErrorToStatus). Una instancia de RpcException
+    // no expone `code` como propiedad propia (solo vía getError()), así que
+    // el status real en el wire caía siempre a UNKNOWN.
+    return throwError(() => ({ code, message: exception.message }));
   }
 }

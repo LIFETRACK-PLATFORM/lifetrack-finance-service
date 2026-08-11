@@ -1,4 +1,3 @@
-import { RpcException } from '@nestjs/microservices';
 import type { Metadata } from '@grpc/grpc-js';
 import { status as GrpcStatus } from '@grpc/grpc-js';
 
@@ -9,9 +8,12 @@ export function getAuthenticatedUserId(metadata: Metadata): string {
   const userId = values[0];
 
   if (!userId || typeof userId !== 'string' || userId.trim() === '') {
-    throw new RpcException({
+    // No usar RpcException: el transporte gRPC de NestJS solo respeta
+    // `error.code` como propiedad directa del objeto (ver server-call.js
+    // #serverErrorToStatus); RpcException lo guarda en getError(), no como
+    // propiedad propia, y el status real en el wire cae siempre a UNKNOWN.
+    throw Object.assign(new Error('Identidad de usuario requerida'), {
       code: GrpcStatus.UNAUTHENTICATED,
-      message: 'Identidad de usuario requerida',
     });
   }
 
