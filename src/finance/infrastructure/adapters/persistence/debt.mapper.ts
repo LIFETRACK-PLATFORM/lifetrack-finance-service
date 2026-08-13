@@ -18,6 +18,8 @@ export class DebtMapper {
         originalAmount: raw.originalAmount ?? undefined,
         minimumPayment: raw.minimumPayment ?? undefined,
         dueDay: raw.dueDay ?? undefined,
+        installmentCount: raw.installmentCount ?? undefined,
+        startingInstallment: raw.startingInstallment,
         accountId: raw.accountId ?? undefined,
         categoryId: raw.categoryId,
         status: raw.status as DebtStatus,

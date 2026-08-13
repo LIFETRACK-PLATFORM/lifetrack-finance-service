@@ -15,6 +15,7 @@ export type TransactionProps = {
   description?: string;
   occurredAt: Date;
   debtId?: string;
+  interestAmount?: number;
   createdAt: Date;
 };
 
@@ -28,6 +29,18 @@ export class TransactionEntity extends AggregateRoot<TransactionProps> {
       throw new InvalidFinanceEntityDataError('categoryId es obligatorio');
     if (props.amount <= 0)
       throw new InvalidFinanceEntityDataError('amount debe ser mayor que cero');
+    if (props.interestAmount !== undefined) {
+      if (props.interestAmount < 0) {
+        throw new InvalidFinanceEntityDataError(
+          'interestAmount no puede ser negativo',
+        );
+      }
+      if (props.interestAmount > props.amount) {
+        throw new InvalidFinanceEntityDataError(
+          'interestAmount no puede ser mayor que amount',
+        );
+      }
+    }
     super(props, id);
   }
 
@@ -54,6 +67,9 @@ export class TransactionEntity extends AggregateRoot<TransactionProps> {
   }
   get debtId(): string | undefined {
     return this.props.debtId;
+  }
+  get interestAmount(): number | undefined {
+    return this.props.interestAmount;
   }
 
   isExpense(): boolean {

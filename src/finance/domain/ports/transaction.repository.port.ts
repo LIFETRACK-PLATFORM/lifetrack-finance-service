@@ -13,6 +13,12 @@ export type CreateTransactionInput = {
   occurredAt: Date;
   recurringItemId?: string;
   debtId?: string;
+  interestAmount?: number;
+};
+
+export type DebtPaymentTotals = {
+  paymentCount: number;
+  interestPaid: number;
 };
 
 export type UpdateTransactionInput = {
@@ -66,6 +72,9 @@ export interface TransactionRepositoryPort {
   countByAccountId(accountId: string): Promise<number>;
   countByCategoryId(categoryId: string): Promise<number>;
   countByDebtId(debtId: string): Promise<number>;
+  getDebtPaymentTotals(
+    debtIds: string[],
+  ): Promise<Map<string, DebtPaymentTotals>>;
   getMonthlySummaryData(
     userId: string,
     periodMonth: number,

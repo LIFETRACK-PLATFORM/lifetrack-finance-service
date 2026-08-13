@@ -22,6 +22,7 @@ function buildDebt(
       totalOwed: overrides.totalOwed ?? 1000,
       categoryId: 'category-deudas',
       status: DebtStatus.ACTIVE,
+      startingInstallment: 0,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
@@ -65,6 +66,7 @@ describe('RegisterDebtPaymentUseCase', () => {
                 status: data.status,
                 lastPaymentMonth: data.lastPaymentMonth,
                 lastPaymentYear: data.lastPaymentYear,
+                startingInstallment: 0,
                 createdAt: new Date(),
                 updatedAt: new Date(),
               },
@@ -140,6 +142,37 @@ describe('RegisterDebtPaymentUseCase', () => {
         occurredAt: '2026-08-05T00:00:00.000Z',
       }),
     ).rejects.toThrow('La cuenta es en USD pero la deuda es en PEN');
+    expect(transactionRepository.create).not.toHaveBeenCalled();
+  });
+
+  it('lanza error si interestAmount supera el monto pagado', async () => {
+    const debt = buildDebt();
+    const account = buildAccount();
+    const debtRepository = {
+      findByIdAndUserId: jest.fn().mockResolvedValue(debt),
+      updatePayment: jest.fn(),
+    };
+    const accountRepository = {
+      findByIdAndUserId: jest.fn().mockResolvedValue(account),
+      updateBalance: jest.fn(),
+    };
+    const transactionRepository = { create: jest.fn() };
+    const useCase = new RegisterDebtPaymentUseCase(
+      debtRepository as any,
+      accountRepository as any,
+      transactionRepository as any,
+    );
+
+    await expect(
+      useCase.execute({
+        userId: 'user-1',
+        debtId: 'debt-1',
+        accountId: 'account-1',
+        amount: 100,
+        interestAmount: 150,
+        occurredAt: '2026-08-05T00:00:00.000Z',
+      }),
+    ).rejects.toThrow('interestAmount no puede ser mayor que amount');
     expect(transactionRepository.create).not.toHaveBeenCalled();
   });
 });

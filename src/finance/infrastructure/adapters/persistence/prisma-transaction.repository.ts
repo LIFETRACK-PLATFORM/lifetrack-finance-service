@@ -4,6 +4,7 @@ import { TransactionEntity } from '../../../domain/entities/transaction.entity';
 import type {
   CreateTransactionInput,
   CurrencyMonthlySummary,
+  DebtPaymentTotals,
   ListTransactionsFilter,
   TransactionRepositoryPort,
   UpdateTransactionInput,
@@ -57,6 +58,7 @@ export class PrismaTransactionRepository implements TransactionRepositoryPort {
         occurredAt: data.occurredAt,
         recurringItemId: data.recurringItemId,
         debtId: data.debtId,
+        interestAmount: data.interestAmount,
       },
     });
     return TransactionMapper.toDomain(raw);
@@ -131,6 +133,29 @@ export class PrismaTransactionRepository implements TransactionRepositoryPort {
 
   async countByDebtId(debtId: string): Promise<number> {
     return this.prisma.transaction.count({ where: { debtId } });
+  }
+
+  async getDebtPaymentTotals(
+    debtIds: string[],
+  ): Promise<Map<string, DebtPaymentTotals>> {
+    const result = new Map<string, DebtPaymentTotals>();
+    if (debtIds.length === 0) return result;
+
+    const rows = await this.prisma.transaction.groupBy({
+      by: ['debtId'],
+      where: { debtId: { in: debtIds } },
+      _count: { _all: true },
+      _sum: { interestAmount: true },
+    });
+
+    for (const row of rows) {
+      if (!row.debtId) continue;
+      result.set(row.debtId, {
+        paymentCount: row._count._all,
+        interestPaid: row._sum.interestAmount ?? 0,
+      });
+    }
+    return result;
   }
 
   async getMonthlySummaryData(

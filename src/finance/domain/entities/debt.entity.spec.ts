@@ -11,6 +11,7 @@ function buildProps(
     totalOwed: 1000,
     categoryId: 'category-1',
     status: DebtStatus.ACTIVE,
+    startingInstallment: 0,
     createdAt: new Date(),
     updatedAt: new Date(),
     ...overrides,
@@ -101,5 +102,45 @@ describe('DebtEntity', () => {
     const debt = new DebtEntity(buildProps());
     debt.archive();
     expect(debt.status).toBe(DebtStatus.ARCHIVED);
+  });
+
+  it('lanza error si installmentCount no es un entero mayor que cero', () => {
+    expect(() => new DebtEntity(buildProps({ installmentCount: 0 }))).toThrow(
+      'installmentCount debe ser un entero mayor que cero',
+    );
+  });
+
+  it('lanza error si startingInstallment es negativo', () => {
+    expect(
+      () => new DebtEntity(buildProps({ startingInstallment: -1 })),
+    ).toThrow('startingInstallment no puede ser negativo');
+  });
+
+  it('lanza error si startingInstallment supera installmentCount', () => {
+    expect(
+      () =>
+        new DebtEntity(
+          buildProps({ installmentCount: 8, startingInstallment: 9 }),
+        ),
+    ).toThrow('startingInstallment no puede ser mayor que installmentCount');
+  });
+
+  it('currentInstallment() es undefined si la deuda no tiene plan de cuotas', () => {
+    const debt = new DebtEntity(buildProps());
+    expect(debt.currentInstallment(3)).toBeUndefined();
+  });
+
+  it('currentInstallment() suma startingInstallment + pagos hechos en la app', () => {
+    const debt = new DebtEntity(
+      buildProps({ installmentCount: 8, startingInstallment: 4 }),
+    );
+    expect(debt.currentInstallment(2)).toBe(6);
+  });
+
+  it('currentInstallment() se cappea en installmentCount', () => {
+    const debt = new DebtEntity(
+      buildProps({ installmentCount: 8, startingInstallment: 7 }),
+    );
+    expect(debt.currentInstallment(5)).toBe(8);
   });
 });

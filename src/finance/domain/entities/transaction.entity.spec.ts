@@ -31,4 +31,24 @@ describe('TransactionEntity', () => {
     expect(transaction.isInMonth(8, 2026)).toBe(true);
     expect(transaction.isInMonth(9, 2026)).toBe(false);
   });
+
+  it('permite interestAmount dentro de amount', () => {
+    const transaction = new TransactionEntity({
+      ...baseProps,
+      interestAmount: 20,
+    });
+    expect(transaction.interestAmount).toBe(20);
+  });
+
+  it('lanza error si interestAmount es negativo', () => {
+    expect(
+      () => new TransactionEntity({ ...baseProps, interestAmount: -1 }),
+    ).toThrow('interestAmount no puede ser negativo');
+  });
+
+  it('lanza error si interestAmount supera amount', () => {
+    expect(
+      () => new TransactionEntity({ ...baseProps, interestAmount: 51 }),
+    ).toThrow('interestAmount no puede ser mayor que amount');
+  });
 });
