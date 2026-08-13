@@ -28,10 +28,12 @@ export type AggregateTransaction = {
 
 export type TransactionAvgAggregateOutputType = {
   amount: number | null
+  interestAmount: number | null
 }
 
 export type TransactionSumAggregateOutputType = {
   amount: number | null
+  interestAmount: number | null
 }
 
 export type TransactionMinAggregateOutputType = {
@@ -45,6 +47,7 @@ export type TransactionMinAggregateOutputType = {
   occurredAt: Date | null
   recurringItemId: string | null
   debtId: string | null
+  interestAmount: number | null
   createdAt: Date | null
 }
 
@@ -59,6 +62,7 @@ export type TransactionMaxAggregateOutputType = {
   occurredAt: Date | null
   recurringItemId: string | null
   debtId: string | null
+  interestAmount: number | null
   createdAt: Date | null
 }
 
@@ -73,6 +77,7 @@ export type TransactionCountAggregateOutputType = {
   occurredAt: number
   recurringItemId: number
   debtId: number
+  interestAmount: number
   createdAt: number
   _all: number
 }
@@ -80,10 +85,12 @@ export type TransactionCountAggregateOutputType = {
 
 export type TransactionAvgAggregateInputType = {
   amount?: true
+  interestAmount?: true
 }
 
 export type TransactionSumAggregateInputType = {
   amount?: true
+  interestAmount?: true
 }
 
 export type TransactionMinAggregateInputType = {
@@ -97,6 +104,7 @@ export type TransactionMinAggregateInputType = {
   occurredAt?: true
   recurringItemId?: true
   debtId?: true
+  interestAmount?: true
   createdAt?: true
 }
 
@@ -111,6 +119,7 @@ export type TransactionMaxAggregateInputType = {
   occurredAt?: true
   recurringItemId?: true
   debtId?: true
+  interestAmount?: true
   createdAt?: true
 }
 
@@ -125,6 +134,7 @@ export type TransactionCountAggregateInputType = {
   occurredAt?: true
   recurringItemId?: true
   debtId?: true
+  interestAmount?: true
   createdAt?: true
   _all?: true
 }
@@ -226,6 +236,7 @@ export type TransactionGroupByOutputType = {
   occurredAt: Date
   recurringItemId: string | null
   debtId: string | null
+  interestAmount: number | null
   createdAt: Date
   _count: TransactionCountAggregateOutputType | null
   _avg: TransactionAvgAggregateOutputType | null
@@ -263,6 +274,7 @@ export type TransactionWhereInput = {
   occurredAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   recurringItemId?: Prisma.StringNullableFilter<"Transaction"> | string | null
   debtId?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  interestAmount?: Prisma.FloatNullableFilter<"Transaction"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   account?: Prisma.XOR<Prisma.AccountScalarRelationFilter, Prisma.AccountWhereInput>
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
@@ -281,6 +293,7 @@ export type TransactionOrderByWithRelationInput = {
   occurredAt?: Prisma.SortOrder
   recurringItemId?: Prisma.SortOrderInput | Prisma.SortOrder
   debtId?: Prisma.SortOrderInput | Prisma.SortOrder
+  interestAmount?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   account?: Prisma.AccountOrderByWithRelationInput
   category?: Prisma.CategoryOrderByWithRelationInput
@@ -302,6 +315,7 @@ export type TransactionWhereUniqueInput = Prisma.AtLeast<{
   occurredAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   recurringItemId?: Prisma.StringNullableFilter<"Transaction"> | string | null
   debtId?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  interestAmount?: Prisma.FloatNullableFilter<"Transaction"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   account?: Prisma.XOR<Prisma.AccountScalarRelationFilter, Prisma.AccountWhereInput>
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
@@ -320,6 +334,7 @@ export type TransactionOrderByWithAggregationInput = {
   occurredAt?: Prisma.SortOrder
   recurringItemId?: Prisma.SortOrderInput | Prisma.SortOrder
   debtId?: Prisma.SortOrderInput | Prisma.SortOrder
+  interestAmount?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.TransactionCountOrderByAggregateInput
   _avg?: Prisma.TransactionAvgOrderByAggregateInput
@@ -342,6 +357,7 @@ export type TransactionScalarWhereWithAggregatesInput = {
   occurredAt?: Prisma.DateTimeWithAggregatesFilter<"Transaction"> | Date | string
   recurringItemId?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null
   debtId?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null
+  interestAmount?: Prisma.FloatNullableWithAggregatesFilter<"Transaction"> | number | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Transaction"> | Date | string
 }
 
@@ -352,6 +368,7 @@ export type TransactionCreateInput = {
   kind: $Enums.TransactionKind
   description?: string | null
   occurredAt: Date | string
+  interestAmount?: number | null
   createdAt?: Date | string
   account: Prisma.AccountCreateNestedOneWithoutTransactionsInput
   category: Prisma.CategoryCreateNestedOneWithoutTransactionsInput
@@ -370,6 +387,7 @@ export type TransactionUncheckedCreateInput = {
   occurredAt: Date | string
   recurringItemId?: string | null
   debtId?: string | null
+  interestAmount?: number | null
   createdAt?: Date | string
 }
 
@@ -380,6 +398,7 @@ export type TransactionUpdateInput = {
   kind?: Prisma.EnumTransactionKindFieldUpdateOperationsInput | $Enums.TransactionKind
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  interestAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   account?: Prisma.AccountUpdateOneRequiredWithoutTransactionsNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutTransactionsNestedInput
@@ -398,6 +417,7 @@ export type TransactionUncheckedUpdateInput = {
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recurringItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   debtId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  interestAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -412,6 +432,7 @@ export type TransactionCreateManyInput = {
   occurredAt: Date | string
   recurringItemId?: string | null
   debtId?: string | null
+  interestAmount?: number | null
   createdAt?: Date | string
 }
 
@@ -422,6 +443,7 @@ export type TransactionUpdateManyMutationInput = {
   kind?: Prisma.EnumTransactionKindFieldUpdateOperationsInput | $Enums.TransactionKind
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  interestAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -436,6 +458,7 @@ export type TransactionUncheckedUpdateManyInput = {
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recurringItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   debtId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  interestAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -460,11 +483,13 @@ export type TransactionCountOrderByAggregateInput = {
   occurredAt?: Prisma.SortOrder
   recurringItemId?: Prisma.SortOrder
   debtId?: Prisma.SortOrder
+  interestAmount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type TransactionAvgOrderByAggregateInput = {
   amount?: Prisma.SortOrder
+  interestAmount?: Prisma.SortOrder
 }
 
 export type TransactionMaxOrderByAggregateInput = {
@@ -478,6 +503,7 @@ export type TransactionMaxOrderByAggregateInput = {
   occurredAt?: Prisma.SortOrder
   recurringItemId?: Prisma.SortOrder
   debtId?: Prisma.SortOrder
+  interestAmount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -492,11 +518,13 @@ export type TransactionMinOrderByAggregateInput = {
   occurredAt?: Prisma.SortOrder
   recurringItemId?: Prisma.SortOrder
   debtId?: Prisma.SortOrder
+  interestAmount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type TransactionSumOrderByAggregateInput = {
   amount?: Prisma.SortOrder
+  interestAmount?: Prisma.SortOrder
 }
 
 export type TransactionCreateNestedManyWithoutAccountInput = {
@@ -585,6 +613,14 @@ export type TransactionUncheckedUpdateManyWithoutCategoryNestedInput = {
 
 export type EnumTransactionKindFieldUpdateOperationsInput = {
   set?: $Enums.TransactionKind
+}
+
+export type NullableFloatFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type TransactionCreateNestedManyWithoutRecurringItemInput = {
@@ -678,6 +714,7 @@ export type TransactionCreateWithoutAccountInput = {
   kind: $Enums.TransactionKind
   description?: string | null
   occurredAt: Date | string
+  interestAmount?: number | null
   createdAt?: Date | string
   category: Prisma.CategoryCreateNestedOneWithoutTransactionsInput
   recurringItem?: Prisma.RecurringItemCreateNestedOneWithoutTransactionsInput
@@ -694,6 +731,7 @@ export type TransactionUncheckedCreateWithoutAccountInput = {
   occurredAt: Date | string
   recurringItemId?: string | null
   debtId?: string | null
+  interestAmount?: number | null
   createdAt?: Date | string
 }
 
@@ -737,6 +775,7 @@ export type TransactionScalarWhereInput = {
   occurredAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   recurringItemId?: Prisma.StringNullableFilter<"Transaction"> | string | null
   debtId?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  interestAmount?: Prisma.FloatNullableFilter<"Transaction"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string
 }
 
@@ -747,6 +786,7 @@ export type TransactionCreateWithoutCategoryInput = {
   kind: $Enums.TransactionKind
   description?: string | null
   occurredAt: Date | string
+  interestAmount?: number | null
   createdAt?: Date | string
   account: Prisma.AccountCreateNestedOneWithoutTransactionsInput
   recurringItem?: Prisma.RecurringItemCreateNestedOneWithoutTransactionsInput
@@ -763,6 +803,7 @@ export type TransactionUncheckedCreateWithoutCategoryInput = {
   occurredAt: Date | string
   recurringItemId?: string | null
   debtId?: string | null
+  interestAmount?: number | null
   createdAt?: Date | string
 }
 
@@ -799,6 +840,7 @@ export type TransactionCreateWithoutRecurringItemInput = {
   kind: $Enums.TransactionKind
   description?: string | null
   occurredAt: Date | string
+  interestAmount?: number | null
   createdAt?: Date | string
   account: Prisma.AccountCreateNestedOneWithoutTransactionsInput
   category: Prisma.CategoryCreateNestedOneWithoutTransactionsInput
@@ -815,6 +857,7 @@ export type TransactionUncheckedCreateWithoutRecurringItemInput = {
   description?: string | null
   occurredAt: Date | string
   debtId?: string | null
+  interestAmount?: number | null
   createdAt?: Date | string
 }
 
@@ -851,6 +894,7 @@ export type TransactionCreateWithoutDebtInput = {
   kind: $Enums.TransactionKind
   description?: string | null
   occurredAt: Date | string
+  interestAmount?: number | null
   createdAt?: Date | string
   account: Prisma.AccountCreateNestedOneWithoutTransactionsInput
   category: Prisma.CategoryCreateNestedOneWithoutTransactionsInput
@@ -867,6 +911,7 @@ export type TransactionUncheckedCreateWithoutDebtInput = {
   description?: string | null
   occurredAt: Date | string
   recurringItemId?: string | null
+  interestAmount?: number | null
   createdAt?: Date | string
 }
 
@@ -906,6 +951,7 @@ export type TransactionCreateManyAccountInput = {
   occurredAt: Date | string
   recurringItemId?: string | null
   debtId?: string | null
+  interestAmount?: number | null
   createdAt?: Date | string
 }
 
@@ -916,6 +962,7 @@ export type TransactionUpdateWithoutAccountInput = {
   kind?: Prisma.EnumTransactionKindFieldUpdateOperationsInput | $Enums.TransactionKind
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  interestAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.CategoryUpdateOneRequiredWithoutTransactionsNestedInput
   recurringItem?: Prisma.RecurringItemUpdateOneWithoutTransactionsNestedInput
@@ -932,6 +979,7 @@ export type TransactionUncheckedUpdateWithoutAccountInput = {
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recurringItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   debtId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  interestAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -945,6 +993,7 @@ export type TransactionUncheckedUpdateManyWithoutAccountInput = {
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recurringItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   debtId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  interestAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -958,6 +1007,7 @@ export type TransactionCreateManyCategoryInput = {
   occurredAt: Date | string
   recurringItemId?: string | null
   debtId?: string | null
+  interestAmount?: number | null
   createdAt?: Date | string
 }
 
@@ -968,6 +1018,7 @@ export type TransactionUpdateWithoutCategoryInput = {
   kind?: Prisma.EnumTransactionKindFieldUpdateOperationsInput | $Enums.TransactionKind
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  interestAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   account?: Prisma.AccountUpdateOneRequiredWithoutTransactionsNestedInput
   recurringItem?: Prisma.RecurringItemUpdateOneWithoutTransactionsNestedInput
@@ -984,6 +1035,7 @@ export type TransactionUncheckedUpdateWithoutCategoryInput = {
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recurringItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   debtId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  interestAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -997,6 +1049,7 @@ export type TransactionUncheckedUpdateManyWithoutCategoryInput = {
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recurringItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   debtId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  interestAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1010,6 +1063,7 @@ export type TransactionCreateManyRecurringItemInput = {
   description?: string | null
   occurredAt: Date | string
   debtId?: string | null
+  interestAmount?: number | null
   createdAt?: Date | string
 }
 
@@ -1020,6 +1074,7 @@ export type TransactionUpdateWithoutRecurringItemInput = {
   kind?: Prisma.EnumTransactionKindFieldUpdateOperationsInput | $Enums.TransactionKind
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  interestAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   account?: Prisma.AccountUpdateOneRequiredWithoutTransactionsNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutTransactionsNestedInput
@@ -1036,6 +1091,7 @@ export type TransactionUncheckedUpdateWithoutRecurringItemInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   debtId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  interestAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1049,6 +1105,7 @@ export type TransactionUncheckedUpdateManyWithoutRecurringItemInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   debtId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  interestAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1062,6 +1119,7 @@ export type TransactionCreateManyDebtInput = {
   description?: string | null
   occurredAt: Date | string
   recurringItemId?: string | null
+  interestAmount?: number | null
   createdAt?: Date | string
 }
 
@@ -1072,6 +1130,7 @@ export type TransactionUpdateWithoutDebtInput = {
   kind?: Prisma.EnumTransactionKindFieldUpdateOperationsInput | $Enums.TransactionKind
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  interestAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   account?: Prisma.AccountUpdateOneRequiredWithoutTransactionsNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutTransactionsNestedInput
@@ -1088,6 +1147,7 @@ export type TransactionUncheckedUpdateWithoutDebtInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recurringItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  interestAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1101,6 +1161,7 @@ export type TransactionUncheckedUpdateManyWithoutDebtInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recurringItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  interestAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1117,6 +1178,7 @@ export type TransactionSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   occurredAt?: boolean
   recurringItemId?: boolean
   debtId?: boolean
+  interestAmount?: boolean
   createdAt?: boolean
   account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
@@ -1135,6 +1197,7 @@ export type TransactionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   occurredAt?: boolean
   recurringItemId?: boolean
   debtId?: boolean
+  interestAmount?: boolean
   createdAt?: boolean
   account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
@@ -1153,6 +1216,7 @@ export type TransactionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   occurredAt?: boolean
   recurringItemId?: boolean
   debtId?: boolean
+  interestAmount?: boolean
   createdAt?: boolean
   account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
@@ -1171,10 +1235,11 @@ export type TransactionSelectScalar = {
   occurredAt?: boolean
   recurringItemId?: boolean
   debtId?: boolean
+  interestAmount?: boolean
   createdAt?: boolean
 }
 
-export type TransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "accountId" | "categoryId" | "amount" | "kind" | "description" | "occurredAt" | "recurringItemId" | "debtId" | "createdAt", ExtArgs["result"]["transaction"]>
+export type TransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "accountId" | "categoryId" | "amount" | "kind" | "description" | "occurredAt" | "recurringItemId" | "debtId" | "interestAmount" | "createdAt", ExtArgs["result"]["transaction"]>
 export type TransactionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
@@ -1213,6 +1278,7 @@ export type $TransactionPayload<ExtArgs extends runtime.Types.Extensions.Interna
     occurredAt: Date
     recurringItemId: string | null
     debtId: string | null
+    interestAmount: number | null
     createdAt: Date
   }, ExtArgs["result"]["transaction"]>
   composites: {}
@@ -1651,6 +1717,7 @@ export interface TransactionFieldRefs {
   readonly occurredAt: Prisma.FieldRef<"Transaction", 'DateTime'>
   readonly recurringItemId: Prisma.FieldRef<"Transaction", 'String'>
   readonly debtId: Prisma.FieldRef<"Transaction", 'String'>
+  readonly interestAmount: Prisma.FieldRef<"Transaction", 'Float'>
   readonly createdAt: Prisma.FieldRef<"Transaction", 'DateTime'>
 }
     

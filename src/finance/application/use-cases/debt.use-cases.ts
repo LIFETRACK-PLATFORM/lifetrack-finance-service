@@ -1,7 +1,10 @@
 import type { AccountRepositoryPort } from '../../domain/ports/account.repository.port';
 import type { CategoryRepositoryPort } from '../../domain/ports/category.repository.port';
 import type { DebtRepositoryPort } from '../../domain/ports/debt.repository.port';
-import type { TransactionRepositoryPort } from '../../domain/ports/transaction.repository.port';
+import type {
+  DebtPaymentTotals,
+  TransactionRepositoryPort,
+} from '../../domain/ports/transaction.repository.port';
 import {
   AccountNotFoundError,
   CategoryNotFoundError,
@@ -15,7 +18,11 @@ import type {
   UpdateDebtInput,
 } from '../dtos/debt.input';
 
-function toResponse(debt: DebtEntity) {
+// `stats` solo lo trae ListDebtsUseCase (una sola consulta bulk para toda la
+// lista). Create/Update/AdjustBalance pasan nada a propósito: el frontend
+// siempre hace reload() -> ListDebts tras cualquier mutación, así que no vale
+// la pena un getDebtPaymentTotals por deuda ahí (no lo "arregles" a N+1).
+function toResponse(debt: DebtEntity, stats?: DebtPaymentTotals) {
   return {
     debtId: debt.id,
     userId: debt.userId,
@@ -27,6 +34,10 @@ function toResponse(debt: DebtEntity) {
     originalAmount: debt.originalAmount,
     minimumPayment: debt.minimumPayment,
     dueDay: debt.dueDay,
+    installmentCount: debt.installmentCount,
+    startingInstallment: debt.startingInstallment,
+    currentInstallment: debt.currentInstallment(stats?.paymentCount ?? 0),
+    totalInterestPaid: stats?.interestPaid ?? 0,
     accountId: debt.accountId ?? '',
     categoryId: debt.categoryId,
     status: debt.status,
@@ -57,6 +68,14 @@ export class CreateDebtUseCase {
     );
     if (!category) throw new CategoryNotFoundError(input.categoryId);
 
+    // Se valida acá, antes de persistir: el repo mapea la entidad DESPUÉS del
+    // insert, así que el constructor de DebtEntity ya no alcanza a proteger
+    // este flujo (la fila quedaría insertada aunque la validación falle).
+    DebtEntity.validateInstallments(
+      input.installmentCount,
+      input.startingInstallment ?? 0,
+    );
+
     const debt = await this.debtRepository.create({
       userId: input.userId,
       name: input.name,
@@ -67,6 +86,8 @@ export class CreateDebtUseCase {
       originalAmount: input.originalAmount,
       minimumPayment: input.minimumPayment,
       dueDay: input.dueDay,
+      installmentCount: input.installmentCount,
+      startingInstallment: input.startingInstallment,
       accountId: input.accountId,
       categoryId: input.categoryId,
     });
@@ -111,6 +132,8 @@ export class UpdateDebtUseCase {
       originalAmount: input.originalAmount,
       minimumPayment: input.minimumPayment,
       dueDay: input.dueDay,
+      installmentCount: input.installmentCount,
+      startingInstallment: input.startingInstallment,
       accountId: input.accountId,
       categoryId: input.categoryId,
     });
@@ -123,6 +146,8 @@ export class UpdateDebtUseCase {
       originalAmount: debt.originalAmount,
       minimumPayment: debt.minimumPayment,
       dueDay: debt.dueDay,
+      installmentCount: debt.installmentCount,
+      startingInstallment: debt.startingInstallment,
       accountId: debt.accountId,
       categoryId: debt.categoryId,
     });
@@ -158,11 +183,19 @@ export class DeleteDebtUseCase {
 }
 
 export class ListDebtsUseCase {
-  constructor(private readonly debtRepository: DebtRepositoryPort) {}
+  constructor(
+    private readonly debtRepository: DebtRepositoryPort,
+    private readonly transactionRepository: TransactionRepositoryPort,
+  ) {}
 
   async execute(input: ListDebtsInput) {
     const debts = await this.debtRepository.listByUserId(input.userId);
-    return { debts: debts.map(toResponse) };
+    const stats = await this.transactionRepository.getDebtPaymentTotals(
+      debts.map((debt) => debt.id),
+    );
+    return {
+      debts: debts.map((debt) => toResponse(debt, stats.get(debt.id))),
+    };
   }
 }
 

@@ -943,6 +943,7 @@ export const TransactionScalarFieldEnum = {
   occurredAt: 'occurredAt',
   recurringItemId: 'recurringItemId',
   debtId: 'debtId',
+  interestAmount: 'interestAmount',
   createdAt: 'createdAt'
 } as const
 
@@ -992,6 +993,8 @@ export const DebtScalarFieldEnum = {
   originalAmount: 'originalAmount',
   minimumPayment: 'minimumPayment',
   dueDay: 'dueDay',
+  installmentCount: 'installmentCount',
+  startingInstallment: 'startingInstallment',
   accountId: 'accountId',
   categoryId: 'categoryId',
   status: 'status',

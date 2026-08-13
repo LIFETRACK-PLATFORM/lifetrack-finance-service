@@ -345,9 +345,11 @@ import type { EventPublisherPort } from './domain/ports/event.publisher.port';
     },
     {
       provide: ListDebtsUseCase,
-      useFactory: (debtRepo: DebtRepositoryPort) =>
-        new ListDebtsUseCase(debtRepo),
-      inject: [DEBT_REPOSITORY],
+      useFactory: (
+        debtRepo: DebtRepositoryPort,
+        transactionRepo: TransactionRepositoryPort,
+      ) => new ListDebtsUseCase(debtRepo, transactionRepo),
+      inject: [DEBT_REPOSITORY, TRANSACTION_REPOSITORY],
     },
     {
       provide: RegisterDebtPaymentUseCase,

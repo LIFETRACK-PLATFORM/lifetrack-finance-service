@@ -10,6 +10,8 @@ export type CreateDebtInput = {
   originalAmount?: number;
   minimumPayment?: number;
   dueDay?: number;
+  installmentCount?: number;
+  startingInstallment?: number;
   accountId?: string;
   categoryId: string;
 };
@@ -24,6 +26,8 @@ export type UpdateDebtInput = {
   originalAmount?: number;
   minimumPayment?: number;
   dueDay?: number;
+  installmentCount?: number;
+  startingInstallment?: number;
   accountId?: string;
   categoryId: string;
 };
@@ -44,6 +48,7 @@ export type RegisterDebtPaymentInput = {
   amount: number;
   description?: string;
   occurredAt: string;
+  interestAmount?: number;
 };
 
 export type AdjustDebtBalanceInput = {

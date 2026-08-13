@@ -29,6 +29,8 @@ export type DebtProps = {
   originalAmount?: number;
   minimumPayment?: number;
   dueDay?: number;
+  installmentCount?: number;
+  startingInstallment: number;
   accountId?: string;
   categoryId: string;
   status: DebtStatus;
@@ -57,6 +59,10 @@ export class DebtEntity extends AggregateRoot<DebtProps> {
       );
     }
     if (props.dueDay !== undefined) DebtEntity.validateDueDay(props.dueDay);
+    DebtEntity.validateInstallments(
+      props.installmentCount,
+      props.startingInstallment,
+    );
     super(props, id);
   }
 
@@ -71,6 +77,33 @@ export class DebtEntity extends AggregateRoot<DebtProps> {
   static validateDueDay(day: number): void {
     if (day < 1 || day > 31) {
       throw new InvalidFinanceEntityDataError('dueDay debe estar entre 1 y 31');
+    }
+  }
+
+  static validateInstallments(
+    installmentCount: number | undefined,
+    startingInstallment: number,
+  ): void {
+    if (
+      installmentCount !== undefined &&
+      (!Number.isInteger(installmentCount) || installmentCount <= 0)
+    ) {
+      throw new InvalidFinanceEntityDataError(
+        'installmentCount debe ser un entero mayor que cero',
+      );
+    }
+    if (!Number.isInteger(startingInstallment) || startingInstallment < 0) {
+      throw new InvalidFinanceEntityDataError(
+        'startingInstallment no puede ser negativo',
+      );
+    }
+    if (
+      installmentCount !== undefined &&
+      startingInstallment > installmentCount
+    ) {
+      throw new InvalidFinanceEntityDataError(
+        'startingInstallment no puede ser mayor que installmentCount',
+      );
     }
   }
 
@@ -101,6 +134,12 @@ export class DebtEntity extends AggregateRoot<DebtProps> {
   get dueDay(): number | undefined {
     return this.props.dueDay;
   }
+  get installmentCount(): number | undefined {
+    return this.props.installmentCount;
+  }
+  get startingInstallment(): number {
+    return this.props.startingInstallment;
+  }
   get accountId(): string | undefined {
     return this.props.accountId;
   }
@@ -125,6 +164,14 @@ export class DebtEntity extends AggregateRoot<DebtProps> {
     return (
       this.props.lastPaymentMonth === month &&
       this.props.lastPaymentYear === year
+    );
+  }
+
+  currentInstallment(paymentsMadeInApp: number): number | undefined {
+    if (this.props.installmentCount === undefined) return undefined;
+    return Math.min(
+      this.props.installmentCount,
+      this.props.startingInstallment + paymentsMadeInApp,
     );
   }
 
@@ -170,6 +217,8 @@ export class DebtEntity extends AggregateRoot<DebtProps> {
     originalAmount?: number;
     minimumPayment?: number;
     dueDay?: number;
+    installmentCount?: number;
+    startingInstallment?: number;
     accountId?: string;
     categoryId: string;
   }): void {
@@ -184,6 +233,8 @@ export class DebtEntity extends AggregateRoot<DebtProps> {
       );
     }
     if (data.dueDay !== undefined) DebtEntity.validateDueDay(data.dueDay);
+    const startingInstallment = data.startingInstallment ?? 0;
+    DebtEntity.validateInstallments(data.installmentCount, startingInstallment);
 
     this.props.name = data.name;
     this.props.lender = data.lender;
@@ -192,6 +243,8 @@ export class DebtEntity extends AggregateRoot<DebtProps> {
     this.props.originalAmount = data.originalAmount;
     this.props.minimumPayment = data.minimumPayment;
     this.props.dueDay = data.dueDay;
+    this.props.installmentCount = data.installmentCount;
+    this.props.startingInstallment = startingInstallment;
     this.props.accountId = data.accountId;
     this.props.categoryId = data.categoryId;
   }

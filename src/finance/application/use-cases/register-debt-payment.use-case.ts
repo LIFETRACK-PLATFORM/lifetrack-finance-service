@@ -35,6 +35,19 @@ export class RegisterDebtPaymentUseCase {
       );
     }
 
+    if (input.interestAmount !== undefined) {
+      if (input.interestAmount < 0) {
+        throw new InvalidFinanceEntityDataError(
+          'interestAmount no puede ser negativo',
+        );
+      }
+      if (input.interestAmount > input.amount) {
+        throw new InvalidFinanceEntityDataError(
+          'interestAmount no puede ser mayor que amount',
+        );
+      }
+    }
+
     const occurredAt = new Date(input.occurredAt);
     const periodMonth = occurredAt.getUTCMonth() + 1;
     const periodYear = occurredAt.getUTCFullYear();
@@ -48,6 +61,7 @@ export class RegisterDebtPaymentUseCase {
       description: input.description ?? `Pago ${debt.name}`,
       occurredAt,
       debtId: debt.id,
+      interestAmount: input.interestAmount,
     });
 
     const newBalance = account.applyDelta(

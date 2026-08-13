@@ -94,6 +94,7 @@ model Transaction {
   recurringItem   RecurringItem?  @relation(fields: [recurringItemId], references: [id])
   debtId          String?
   debt            Debt?           @relation(fields: [debtId], references: [id])
+  interestAmount  Float?
   createdAt       DateTime        @default(now())
 
   @@index([userId])
@@ -141,25 +142,27 @@ model RecurringItem {
 }
 
 model Debt {
-  id               String     @id @default(uuid())
-  userId           String
-  name             String
-  lender           String?
-  type             DebtType   @default(OTHER)
-  currency         String
-  totalOwed        Float
-  originalAmount   Float?
-  minimumPayment   Float?
-  dueDay           Int?
-  accountId        String?
-  account          Account?   @relation(fields: [accountId], references: [id])
-  categoryId       String
-  category         Category   @relation(fields: [categoryId], references: [id])
-  status           DebtStatus @default(ACTIVE)
-  lastPaymentMonth Int?
-  lastPaymentYear  Int?
-  createdAt        DateTime   @default(now())
-  updatedAt        DateTime   @updatedAt
+  id                  String     @id @default(uuid())
+  userId              String
+  name                String
+  lender              String?
+  type                DebtType   @default(OTHER)
+  currency            String
+  totalOwed           Float
+  originalAmount      Float?
+  minimumPayment      Float?
+  dueDay              Int?
+  installmentCount    Int?
+  startingInstallment Int        @default(0)
+  accountId           String?
+  account             Account?   @relation(fields: [accountId], references: [id])
+  categoryId          String
+  category            Category   @relation(fields: [categoryId], references: [id])
+  status              DebtStatus @default(ACTIVE)
+  lastPaymentMonth    Int?
+  lastPaymentYear     Int?
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
 
   transactions Transaction[]
 

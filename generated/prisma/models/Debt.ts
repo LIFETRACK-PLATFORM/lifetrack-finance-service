@@ -31,6 +31,8 @@ export type DebtAvgAggregateOutputType = {
   originalAmount: number | null
   minimumPayment: number | null
   dueDay: number | null
+  installmentCount: number | null
+  startingInstallment: number | null
   lastPaymentMonth: number | null
   lastPaymentYear: number | null
 }
@@ -40,6 +42,8 @@ export type DebtSumAggregateOutputType = {
   originalAmount: number | null
   minimumPayment: number | null
   dueDay: number | null
+  installmentCount: number | null
+  startingInstallment: number | null
   lastPaymentMonth: number | null
   lastPaymentYear: number | null
 }
@@ -55,6 +59,8 @@ export type DebtMinAggregateOutputType = {
   originalAmount: number | null
   minimumPayment: number | null
   dueDay: number | null
+  installmentCount: number | null
+  startingInstallment: number | null
   accountId: string | null
   categoryId: string | null
   status: $Enums.DebtStatus | null
@@ -75,6 +81,8 @@ export type DebtMaxAggregateOutputType = {
   originalAmount: number | null
   minimumPayment: number | null
   dueDay: number | null
+  installmentCount: number | null
+  startingInstallment: number | null
   accountId: string | null
   categoryId: string | null
   status: $Enums.DebtStatus | null
@@ -95,6 +103,8 @@ export type DebtCountAggregateOutputType = {
   originalAmount: number
   minimumPayment: number
   dueDay: number
+  installmentCount: number
+  startingInstallment: number
   accountId: number
   categoryId: number
   status: number
@@ -111,6 +121,8 @@ export type DebtAvgAggregateInputType = {
   originalAmount?: true
   minimumPayment?: true
   dueDay?: true
+  installmentCount?: true
+  startingInstallment?: true
   lastPaymentMonth?: true
   lastPaymentYear?: true
 }
@@ -120,6 +132,8 @@ export type DebtSumAggregateInputType = {
   originalAmount?: true
   minimumPayment?: true
   dueDay?: true
+  installmentCount?: true
+  startingInstallment?: true
   lastPaymentMonth?: true
   lastPaymentYear?: true
 }
@@ -135,6 +149,8 @@ export type DebtMinAggregateInputType = {
   originalAmount?: true
   minimumPayment?: true
   dueDay?: true
+  installmentCount?: true
+  startingInstallment?: true
   accountId?: true
   categoryId?: true
   status?: true
@@ -155,6 +171,8 @@ export type DebtMaxAggregateInputType = {
   originalAmount?: true
   minimumPayment?: true
   dueDay?: true
+  installmentCount?: true
+  startingInstallment?: true
   accountId?: true
   categoryId?: true
   status?: true
@@ -175,6 +193,8 @@ export type DebtCountAggregateInputType = {
   originalAmount?: true
   minimumPayment?: true
   dueDay?: true
+  installmentCount?: true
+  startingInstallment?: true
   accountId?: true
   categoryId?: true
   status?: true
@@ -282,6 +302,8 @@ export type DebtGroupByOutputType = {
   originalAmount: number | null
   minimumPayment: number | null
   dueDay: number | null
+  installmentCount: number | null
+  startingInstallment: number
   accountId: string | null
   categoryId: string
   status: $Enums.DebtStatus
@@ -325,6 +347,8 @@ export type DebtWhereInput = {
   originalAmount?: Prisma.FloatNullableFilter<"Debt"> | number | null
   minimumPayment?: Prisma.FloatNullableFilter<"Debt"> | number | null
   dueDay?: Prisma.IntNullableFilter<"Debt"> | number | null
+  installmentCount?: Prisma.IntNullableFilter<"Debt"> | number | null
+  startingInstallment?: Prisma.IntFilter<"Debt"> | number
   accountId?: Prisma.StringNullableFilter<"Debt"> | string | null
   categoryId?: Prisma.StringFilter<"Debt"> | string
   status?: Prisma.EnumDebtStatusFilter<"Debt"> | $Enums.DebtStatus
@@ -348,6 +372,8 @@ export type DebtOrderByWithRelationInput = {
   originalAmount?: Prisma.SortOrderInput | Prisma.SortOrder
   minimumPayment?: Prisma.SortOrderInput | Prisma.SortOrder
   dueDay?: Prisma.SortOrderInput | Prisma.SortOrder
+  installmentCount?: Prisma.SortOrderInput | Prisma.SortOrder
+  startingInstallment?: Prisma.SortOrder
   accountId?: Prisma.SortOrderInput | Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -374,6 +400,8 @@ export type DebtWhereUniqueInput = Prisma.AtLeast<{
   originalAmount?: Prisma.FloatNullableFilter<"Debt"> | number | null
   minimumPayment?: Prisma.FloatNullableFilter<"Debt"> | number | null
   dueDay?: Prisma.IntNullableFilter<"Debt"> | number | null
+  installmentCount?: Prisma.IntNullableFilter<"Debt"> | number | null
+  startingInstallment?: Prisma.IntFilter<"Debt"> | number
   accountId?: Prisma.StringNullableFilter<"Debt"> | string | null
   categoryId?: Prisma.StringFilter<"Debt"> | string
   status?: Prisma.EnumDebtStatusFilter<"Debt"> | $Enums.DebtStatus
@@ -397,6 +425,8 @@ export type DebtOrderByWithAggregationInput = {
   originalAmount?: Prisma.SortOrderInput | Prisma.SortOrder
   minimumPayment?: Prisma.SortOrderInput | Prisma.SortOrder
   dueDay?: Prisma.SortOrderInput | Prisma.SortOrder
+  installmentCount?: Prisma.SortOrderInput | Prisma.SortOrder
+  startingInstallment?: Prisma.SortOrder
   accountId?: Prisma.SortOrderInput | Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -425,6 +455,8 @@ export type DebtScalarWhereWithAggregatesInput = {
   originalAmount?: Prisma.FloatNullableWithAggregatesFilter<"Debt"> | number | null
   minimumPayment?: Prisma.FloatNullableWithAggregatesFilter<"Debt"> | number | null
   dueDay?: Prisma.IntNullableWithAggregatesFilter<"Debt"> | number | null
+  installmentCount?: Prisma.IntNullableWithAggregatesFilter<"Debt"> | number | null
+  startingInstallment?: Prisma.IntWithAggregatesFilter<"Debt"> | number
   accountId?: Prisma.StringNullableWithAggregatesFilter<"Debt"> | string | null
   categoryId?: Prisma.StringWithAggregatesFilter<"Debt"> | string
   status?: Prisma.EnumDebtStatusWithAggregatesFilter<"Debt"> | $Enums.DebtStatus
@@ -445,6 +477,8 @@ export type DebtCreateInput = {
   originalAmount?: number | null
   minimumPayment?: number | null
   dueDay?: number | null
+  installmentCount?: number | null
+  startingInstallment?: number
   status?: $Enums.DebtStatus
   lastPaymentMonth?: number | null
   lastPaymentYear?: number | null
@@ -466,6 +500,8 @@ export type DebtUncheckedCreateInput = {
   originalAmount?: number | null
   minimumPayment?: number | null
   dueDay?: number | null
+  installmentCount?: number | null
+  startingInstallment?: number
   accountId?: string | null
   categoryId: string
   status?: $Enums.DebtStatus
@@ -487,6 +523,8 @@ export type DebtUpdateInput = {
   originalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   minimumPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   dueDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  installmentCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  startingInstallment?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumDebtStatusFieldUpdateOperationsInput | $Enums.DebtStatus
   lastPaymentMonth?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPaymentYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -508,6 +546,8 @@ export type DebtUncheckedUpdateInput = {
   originalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   minimumPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   dueDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  installmentCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  startingInstallment?: Prisma.IntFieldUpdateOperationsInput | number
   accountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDebtStatusFieldUpdateOperationsInput | $Enums.DebtStatus
@@ -529,6 +569,8 @@ export type DebtCreateManyInput = {
   originalAmount?: number | null
   minimumPayment?: number | null
   dueDay?: number | null
+  installmentCount?: number | null
+  startingInstallment?: number
   accountId?: string | null
   categoryId: string
   status?: $Enums.DebtStatus
@@ -549,6 +591,8 @@ export type DebtUpdateManyMutationInput = {
   originalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   minimumPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   dueDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  installmentCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  startingInstallment?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumDebtStatusFieldUpdateOperationsInput | $Enums.DebtStatus
   lastPaymentMonth?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPaymentYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -567,6 +611,8 @@ export type DebtUncheckedUpdateManyInput = {
   originalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   minimumPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   dueDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  installmentCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  startingInstallment?: Prisma.IntFieldUpdateOperationsInput | number
   accountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDebtStatusFieldUpdateOperationsInput | $Enums.DebtStatus
@@ -602,6 +648,8 @@ export type DebtCountOrderByAggregateInput = {
   originalAmount?: Prisma.SortOrder
   minimumPayment?: Prisma.SortOrder
   dueDay?: Prisma.SortOrder
+  installmentCount?: Prisma.SortOrder
+  startingInstallment?: Prisma.SortOrder
   accountId?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -616,6 +664,8 @@ export type DebtAvgOrderByAggregateInput = {
   originalAmount?: Prisma.SortOrder
   minimumPayment?: Prisma.SortOrder
   dueDay?: Prisma.SortOrder
+  installmentCount?: Prisma.SortOrder
+  startingInstallment?: Prisma.SortOrder
   lastPaymentMonth?: Prisma.SortOrder
   lastPaymentYear?: Prisma.SortOrder
 }
@@ -631,6 +681,8 @@ export type DebtMaxOrderByAggregateInput = {
   originalAmount?: Prisma.SortOrder
   minimumPayment?: Prisma.SortOrder
   dueDay?: Prisma.SortOrder
+  installmentCount?: Prisma.SortOrder
+  startingInstallment?: Prisma.SortOrder
   accountId?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -651,6 +703,8 @@ export type DebtMinOrderByAggregateInput = {
   originalAmount?: Prisma.SortOrder
   minimumPayment?: Prisma.SortOrder
   dueDay?: Prisma.SortOrder
+  installmentCount?: Prisma.SortOrder
+  startingInstallment?: Prisma.SortOrder
   accountId?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -665,6 +719,8 @@ export type DebtSumOrderByAggregateInput = {
   originalAmount?: Prisma.SortOrder
   minimumPayment?: Prisma.SortOrder
   dueDay?: Prisma.SortOrder
+  installmentCount?: Prisma.SortOrder
+  startingInstallment?: Prisma.SortOrder
   lastPaymentMonth?: Prisma.SortOrder
   lastPaymentYear?: Prisma.SortOrder
 }
@@ -773,14 +829,6 @@ export type EnumDebtTypeFieldUpdateOperationsInput = {
   set?: $Enums.DebtType
 }
 
-export type NullableFloatFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type EnumDebtStatusFieldUpdateOperationsInput = {
   set?: $Enums.DebtStatus
 }
@@ -796,6 +844,8 @@ export type DebtCreateWithoutAccountInput = {
   originalAmount?: number | null
   minimumPayment?: number | null
   dueDay?: number | null
+  installmentCount?: number | null
+  startingInstallment?: number
   status?: $Enums.DebtStatus
   lastPaymentMonth?: number | null
   lastPaymentYear?: number | null
@@ -816,6 +866,8 @@ export type DebtUncheckedCreateWithoutAccountInput = {
   originalAmount?: number | null
   minimumPayment?: number | null
   dueDay?: number | null
+  installmentCount?: number | null
+  startingInstallment?: number
   categoryId: string
   status?: $Enums.DebtStatus
   lastPaymentMonth?: number | null
@@ -865,6 +917,8 @@ export type DebtScalarWhereInput = {
   originalAmount?: Prisma.FloatNullableFilter<"Debt"> | number | null
   minimumPayment?: Prisma.FloatNullableFilter<"Debt"> | number | null
   dueDay?: Prisma.IntNullableFilter<"Debt"> | number | null
+  installmentCount?: Prisma.IntNullableFilter<"Debt"> | number | null
+  startingInstallment?: Prisma.IntFilter<"Debt"> | number
   accountId?: Prisma.StringNullableFilter<"Debt"> | string | null
   categoryId?: Prisma.StringFilter<"Debt"> | string
   status?: Prisma.EnumDebtStatusFilter<"Debt"> | $Enums.DebtStatus
@@ -885,6 +939,8 @@ export type DebtCreateWithoutCategoryInput = {
   originalAmount?: number | null
   minimumPayment?: number | null
   dueDay?: number | null
+  installmentCount?: number | null
+  startingInstallment?: number
   status?: $Enums.DebtStatus
   lastPaymentMonth?: number | null
   lastPaymentYear?: number | null
@@ -905,6 +961,8 @@ export type DebtUncheckedCreateWithoutCategoryInput = {
   originalAmount?: number | null
   minimumPayment?: number | null
   dueDay?: number | null
+  installmentCount?: number | null
+  startingInstallment?: number
   accountId?: string | null
   status?: $Enums.DebtStatus
   lastPaymentMonth?: number | null
@@ -951,6 +1009,8 @@ export type DebtCreateWithoutTransactionsInput = {
   originalAmount?: number | null
   minimumPayment?: number | null
   dueDay?: number | null
+  installmentCount?: number | null
+  startingInstallment?: number
   status?: $Enums.DebtStatus
   lastPaymentMonth?: number | null
   lastPaymentYear?: number | null
@@ -971,6 +1031,8 @@ export type DebtUncheckedCreateWithoutTransactionsInput = {
   originalAmount?: number | null
   minimumPayment?: number | null
   dueDay?: number | null
+  installmentCount?: number | null
+  startingInstallment?: number
   accountId?: string | null
   categoryId: string
   status?: $Enums.DebtStatus
@@ -1007,6 +1069,8 @@ export type DebtUpdateWithoutTransactionsInput = {
   originalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   minimumPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   dueDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  installmentCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  startingInstallment?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumDebtStatusFieldUpdateOperationsInput | $Enums.DebtStatus
   lastPaymentMonth?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPaymentYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1027,6 +1091,8 @@ export type DebtUncheckedUpdateWithoutTransactionsInput = {
   originalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   minimumPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   dueDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  installmentCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  startingInstallment?: Prisma.IntFieldUpdateOperationsInput | number
   accountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDebtStatusFieldUpdateOperationsInput | $Enums.DebtStatus
@@ -1047,6 +1113,8 @@ export type DebtCreateManyAccountInput = {
   originalAmount?: number | null
   minimumPayment?: number | null
   dueDay?: number | null
+  installmentCount?: number | null
+  startingInstallment?: number
   categoryId: string
   status?: $Enums.DebtStatus
   lastPaymentMonth?: number | null
@@ -1066,6 +1134,8 @@ export type DebtUpdateWithoutAccountInput = {
   originalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   minimumPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   dueDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  installmentCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  startingInstallment?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumDebtStatusFieldUpdateOperationsInput | $Enums.DebtStatus
   lastPaymentMonth?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPaymentYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1086,6 +1156,8 @@ export type DebtUncheckedUpdateWithoutAccountInput = {
   originalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   minimumPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   dueDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  installmentCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  startingInstallment?: Prisma.IntFieldUpdateOperationsInput | number
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDebtStatusFieldUpdateOperationsInput | $Enums.DebtStatus
   lastPaymentMonth?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1106,6 +1178,8 @@ export type DebtUncheckedUpdateManyWithoutAccountInput = {
   originalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   minimumPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   dueDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  installmentCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  startingInstallment?: Prisma.IntFieldUpdateOperationsInput | number
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDebtStatusFieldUpdateOperationsInput | $Enums.DebtStatus
   lastPaymentMonth?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1125,6 +1199,8 @@ export type DebtCreateManyCategoryInput = {
   originalAmount?: number | null
   minimumPayment?: number | null
   dueDay?: number | null
+  installmentCount?: number | null
+  startingInstallment?: number
   accountId?: string | null
   status?: $Enums.DebtStatus
   lastPaymentMonth?: number | null
@@ -1144,6 +1220,8 @@ export type DebtUpdateWithoutCategoryInput = {
   originalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   minimumPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   dueDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  installmentCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  startingInstallment?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumDebtStatusFieldUpdateOperationsInput | $Enums.DebtStatus
   lastPaymentMonth?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   lastPaymentYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1164,6 +1242,8 @@ export type DebtUncheckedUpdateWithoutCategoryInput = {
   originalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   minimumPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   dueDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  installmentCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  startingInstallment?: Prisma.IntFieldUpdateOperationsInput | number
   accountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDebtStatusFieldUpdateOperationsInput | $Enums.DebtStatus
   lastPaymentMonth?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1184,6 +1264,8 @@ export type DebtUncheckedUpdateManyWithoutCategoryInput = {
   originalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   minimumPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   dueDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  installmentCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  startingInstallment?: Prisma.IntFieldUpdateOperationsInput | number
   accountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDebtStatusFieldUpdateOperationsInput | $Enums.DebtStatus
   lastPaymentMonth?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1234,6 +1316,8 @@ export type DebtSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   originalAmount?: boolean
   minimumPayment?: boolean
   dueDay?: boolean
+  installmentCount?: boolean
+  startingInstallment?: boolean
   accountId?: boolean
   categoryId?: boolean
   status?: boolean
@@ -1258,6 +1342,8 @@ export type DebtSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   originalAmount?: boolean
   minimumPayment?: boolean
   dueDay?: boolean
+  installmentCount?: boolean
+  startingInstallment?: boolean
   accountId?: boolean
   categoryId?: boolean
   status?: boolean
@@ -1280,6 +1366,8 @@ export type DebtSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   originalAmount?: boolean
   minimumPayment?: boolean
   dueDay?: boolean
+  installmentCount?: boolean
+  startingInstallment?: boolean
   accountId?: boolean
   categoryId?: boolean
   status?: boolean
@@ -1302,6 +1390,8 @@ export type DebtSelectScalar = {
   originalAmount?: boolean
   minimumPayment?: boolean
   dueDay?: boolean
+  installmentCount?: boolean
+  startingInstallment?: boolean
   accountId?: boolean
   categoryId?: boolean
   status?: boolean
@@ -1311,7 +1401,7 @@ export type DebtSelectScalar = {
   updatedAt?: boolean
 }
 
-export type DebtOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "lender" | "type" | "currency" | "totalOwed" | "originalAmount" | "minimumPayment" | "dueDay" | "accountId" | "categoryId" | "status" | "lastPaymentMonth" | "lastPaymentYear" | "createdAt" | "updatedAt", ExtArgs["result"]["debt"]>
+export type DebtOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "lender" | "type" | "currency" | "totalOwed" | "originalAmount" | "minimumPayment" | "dueDay" | "installmentCount" | "startingInstallment" | "accountId" | "categoryId" | "status" | "lastPaymentMonth" | "lastPaymentYear" | "createdAt" | "updatedAt", ExtArgs["result"]["debt"]>
 export type DebtInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   account?: boolean | Prisma.Debt$accountArgs<ExtArgs>
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
@@ -1345,6 +1435,8 @@ export type $DebtPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     originalAmount: number | null
     minimumPayment: number | null
     dueDay: number | null
+    installmentCount: number | null
+    startingInstallment: number
     accountId: string | null
     categoryId: string
     status: $Enums.DebtStatus
@@ -1788,6 +1880,8 @@ export interface DebtFieldRefs {
   readonly originalAmount: Prisma.FieldRef<"Debt", 'Float'>
   readonly minimumPayment: Prisma.FieldRef<"Debt", 'Float'>
   readonly dueDay: Prisma.FieldRef<"Debt", 'Int'>
+  readonly installmentCount: Prisma.FieldRef<"Debt", 'Int'>
+  readonly startingInstallment: Prisma.FieldRef<"Debt", 'Int'>
   readonly accountId: Prisma.FieldRef<"Debt", 'String'>
   readonly categoryId: Prisma.FieldRef<"Debt", 'String'>
   readonly status: Prisma.FieldRef<"Debt", 'DebtStatus'>

@@ -16,6 +16,7 @@ export class TransactionMapper {
         description: raw.description ?? undefined,
         occurredAt: raw.occurredAt,
         debtId: raw.debtId ?? undefined,
+        interestAmount: raw.interestAmount ?? undefined,
         createdAt: raw.createdAt,
       },
       raw.id,

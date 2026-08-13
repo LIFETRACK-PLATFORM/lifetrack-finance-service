@@ -2,6 +2,7 @@ import {
   IsDateString,
   IsEnum,
   IsInt,
+  IsNumber,
   IsOptional,
   IsPositive,
   IsString,
@@ -44,6 +45,16 @@ export class CreateDebtDto {
   dueDay?: number;
 
   @IsOptional()
+  @IsInt()
+  @Min(1)
+  installmentCount?: number;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  startingInstallment?: number;
+
+  @IsOptional()
   @IsString()
   accountId?: string;
 
@@ -84,6 +95,16 @@ export class UpdateDebtDto {
   dueDay?: number;
 
   @IsOptional()
+  @IsInt()
+  @Min(1)
+  installmentCount?: number;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  startingInstallment?: number;
+
+  @IsOptional()
   @IsString()
   accountId?: string;
 
@@ -112,6 +133,11 @@ export class RegisterDebtPaymentDto {
 
   @IsDateString()
   occurredAt: string;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  interestAmount?: number;
 }
 
 export class AdjustDebtBalanceDto {
